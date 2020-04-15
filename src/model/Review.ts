@@ -16,7 +16,7 @@ export interface Review {
 
   body: string;
 
-  readingStatus: string;
+  readingStatus: ReadingStatus;
 
   readingStartedAt?: string;
 
