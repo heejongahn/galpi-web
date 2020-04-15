@@ -14,6 +14,11 @@ class MyApp extends App {
             rel="stylesheet"
             href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Noto Serif KR:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext"
           />
+          <link
+            rel="stylesheet"
+            type="text/css"
+            href="//fonts.googleapis.com/icon?family=Material+Icons"
+          />
         </Head>
         <Component {...pageProps} />
       </>
