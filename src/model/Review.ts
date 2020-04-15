@@ -1,7 +1,7 @@
 import { User } from './User';
 import { Book } from './Book';
 
-enum ReadingStatus {
+export enum ReadingStatus {
   hasntStarted = 'hasntStarted',
   reading = 'reading',
   finishedReading = 'finishedReading',
