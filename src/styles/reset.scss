@@ -29,9 +29,13 @@ html,
 body,
 #__next {
   height: 100%;
+  font-size: 16px;
 }
 
 * {
+  font-family: 'Noto Serif KR', 'Lato', 'PingFang SC', 'Microsoft YaHei', serif;
+  font-size: inherit;
+
   box-sizing: border-box;
   word-break: keep-all;
   overflow-wrap: break-word;
@@ -66,4 +70,8 @@ button {
 input::-ms-clear,
 input::-ms-reveal {
   display: none !important;
+}
+
+button {
+  cursor: pointer;
 }
