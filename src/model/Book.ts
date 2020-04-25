@@ -1,5 +1,3 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
-
 export interface BookPayload {
   isbn: string;
   title: string;
@@ -10,7 +8,6 @@ export interface BookPayload {
   imageUri: string;
 }
 
-@Entity()
 export interface Book {
   id: string;
   isbn: string;
