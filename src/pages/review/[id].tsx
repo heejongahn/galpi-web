@@ -64,13 +64,17 @@ const ReviewDetail: NextPage<Props> = ({ review }) => {
 ReviewDetail.getInitialProps = async (context) => {
   const { id } = context.query;
   if (id == null) {
-    return {};
+    return { review: undefined };
   }
 
   const parsedId = Array.isArray(id) ? id[0] : id;
 
-  const { review } = await getReview({ id: parsedId });
-  return { review };
+  try {
+    const { review } = await getReview({ id: parsedId });
+    return { review };
+  } catch {
+    return { review: undefined };
+  }
 };
 
 export default ReviewDetail;
