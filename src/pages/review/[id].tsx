@@ -1,5 +1,6 @@
 import React from 'react';
 import { NextPage } from 'next';
+import Head from 'next/head';
 import styled from '@emotion/styled';
 import { parseISO, format } from 'date-fns';
 
@@ -9,6 +10,7 @@ import { Review } from '../../model/Review';
 import ReadingStatusBadge from '../../components/ReadingStatusBadge';
 import ScoreBadge from '../../components/ScoreBadge';
 import { Button } from '../../atoms';
+import CommonHeadElements from '../../components/CommonHeadElements';
 
 interface Props {
   review?: Review;
@@ -30,34 +32,43 @@ const ReviewDetail: NextPage<Props> = ({ review }) => {
     );
   }
 
+  const title = `${review.title} – 갈피`;
+  const displayName = review.user.displayName || review.user.email;
+  const description = `${displayName}님의 『${review.book.title}』} 독후감`;
+
   return (
-    <Layout>
-      <Header>
-        <Meta>
-          <Title>{review.title}</Title>
-          <BookTitle>
-            『{review.book.title}』 – {review.book.author}
-          </BookTitle>
-          <Badges>
-            <ReadingStatusBadge
-              readingStatus={review.readingStatus}
-            ></ReadingStatusBadge>
-            <StyledScoreBadge score={review.stars}></StyledScoreBadge>
-          </Badges>
-          <Author>{review.user.displayName || review.user.email}</Author>
-          <DateInfos>
-            <DateInfo>{parsedCreatedAt} 씀</DateInfo>
-            <DateInfo>{parsedLastModifiedAt} 고침</DateInfo>
-          </DateInfos>
-        </Meta>
-        {review.book.imageUri ? <img src={review.book.imageUri} /> : null}
-      </Header>
-      <Body>{review.body}</Body>
-      <Buttons>
-        <ShareButton onClick={() => alert(1)}>공유하기</ShareButton>
-        <AboutGalpiButton href="/">“갈피” 알아보기</AboutGalpiButton>
-      </Buttons>
-    </Layout>
+    <>
+      <Head>
+        <CommonHeadElements title={title} description={description} />
+      </Head>
+      <Layout>
+        <Header>
+          <Meta>
+            <Title>{review.title}</Title>
+            <BookTitle>
+              『{review.book.title}』 – {review.book.author}
+            </BookTitle>
+            <Badges>
+              <ReadingStatusBadge
+                readingStatus={review.readingStatus}
+              ></ReadingStatusBadge>
+              <StyledScoreBadge score={review.stars}></StyledScoreBadge>
+            </Badges>
+            <Author>{displayName}</Author>
+            <DateInfos>
+              <DateInfo>{parsedCreatedAt} 씀</DateInfo>
+              <DateInfo>{parsedLastModifiedAt} 고침</DateInfo>
+            </DateInfos>
+          </Meta>
+          {review.book.imageUri ? <img src={review.book.imageUri} /> : null}
+        </Header>
+        <Body>{review.body}</Body>
+        <Buttons>
+          <ShareButton onClick={() => alert(1)}>공유하기</ShareButton>
+          <AboutGalpiButton href="/">“갈피” 알아보기</AboutGalpiButton>
+        </Buttons>
+      </Layout>
+    </>
   );
 };
 
