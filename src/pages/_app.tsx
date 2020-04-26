@@ -9,14 +9,12 @@ class MyApp extends App {
   render() {
     const { Component, pageProps, router } = this.props;
 
-    const host = `https://galpi.world`;
+    const host = process.env.HOST;
     const url = `${host}${router.asPath}`;
-
-    console.log(url);
 
     const title = '갈피';
     const description = '갈피는 아름다운 독후감 작성 앱입니다.';
-    const ogImageUrl = `${host}og.png`;
+    const ogImageUrl = `${host}/og.png`;
 
     return (
       <>

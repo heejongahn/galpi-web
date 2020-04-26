@@ -11,7 +11,7 @@ interface Response {
 
 export async function getReview({ id }: Params) {
   const { data } = await axios.get<Response>(
-    `http://localhost:3000/review/get?id=${id}`
+    `${process.env.API_ENDPOINT}/review/get?id=${id}`
   );
   return data;
 }
