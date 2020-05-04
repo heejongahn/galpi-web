@@ -1,6 +1,13 @@
 import React, { useMemo } from 'react';
 import { Review } from '../../model/Review';
 import { Badge } from '../../atoms';
+import {
+  faSkull,
+  faPoo,
+  faBalanceScale,
+  faHeart,
+  faKissWinkHeart,
+} from '@fortawesome/free-solid-svg-icons';
 
 interface Props {
   score: Review['stars'];
@@ -11,17 +18,17 @@ export default function ScoreBadge({ score, className }: Props) {
   const { icon, label } = useMemo(() => {
     switch (score) {
       case 0:
-        return { icon: 'clear', label: '최악이에요' };
+        return { icon: faSkull, label: '최악이에요' } as const;
       case 1:
-        return { icon: 'thumb_down', label: '별로에요' };
+        return { icon: faPoo, label: '별로에요' } as const;
       case 2:
-        return { icon: 'thumbs_up_down', label: '보통이에요' };
+        return { icon: faBalanceScale, label: '보통이에요' } as const;
       case 3:
-        return { icon: 'thumb_up', label: '추천해요' };
+        return { icon: faHeart, label: '추천해요' } as const;
       case 4:
-        return { icon: 'favorite', label: '최고에요' };
+        return { icon: faKissWinkHeart, label: '최고에요' } as const;
       default:
-        return { icon: 'thumbs_up_down', label: '보통이에요' };
+        return { icon: faBalanceScale, label: '보통이에요' } as const;
     }
   }, [score]);
 

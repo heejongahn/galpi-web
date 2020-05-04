@@ -1,36 +1,19 @@
 import React from 'react';
+import {
+  FontAwesomeIcon,
+  FontAwesomeIconProps,
+} from '@fortawesome/react-fontawesome';
 import styled from '@emotion/styled';
 
 interface Props {
-  children: string;
   className?: string;
+  icon: FontAwesomeIconProps['icon'];
 }
 
-export default function Icon({ children, className }: Props) {
-  return <Wrapper className={className}>{children}</Wrapper>;
+export default function Icon({ className, icon }: Props) {
+  return <StyledFontAwesomeIcon className={className} icon={icon} />;
 }
 
-const Wrapper = styled.i`
-  font-family: 'Material Icons';
-  font-weight: normal;
-  font-style: normal;
-  font-size: 24px; /* Preferred icon size */
-  display: inline-block;
-  line-height: 1;
-  text-transform: none;
-  letter-spacing: normal;
-  word-wrap: normal;
-  white-space: nowrap;
-  direction: ltr;
-
-  /* Support for all WebKit browsers. */
-  -webkit-font-smoothing: antialiased;
-  /* Support for Safari and Chrome. */
-  text-rendering: optimizeLegibility;
-
-  /* Support for Firefox. */
-  -moz-osx-font-smoothing: grayscale;
-
-  /* Support for IE. */
-  font-feature-settings: 'liga';
+const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
+  font-size: 24px;
 `;

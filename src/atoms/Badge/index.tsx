@@ -1,17 +1,17 @@
-import React from 'react';
+import React, { ComponentProps } from 'react';
 import styled from '@emotion/styled';
 import Icon from '../Icon';
 
 interface Props {
   className?: string;
-  icon?: string;
+  icon?: ComponentProps<typeof Icon>['icon'];
   children: React.ReactNode;
 }
 
 export default function Badge({ className, icon, children }: Props) {
   return (
     <Wrapper className={className}>
-      {icon != null ? <StyledIcon>{icon}</StyledIcon> : null}
+      {icon != null ? <StyledIcon icon={icon}></StyledIcon> : null}
       {children}
     </Wrapper>
   );
@@ -23,10 +23,11 @@ const Wrapper = styled.span`
 
   font-size: 0.75rem;
   font-weight: 700;
+  line-height: 1;
 
   border: 1px solid black;
   border-radius: 2px;
-  padding: 2px 6px;
+  padding: 4px 6px;
 `;
 
 const StyledIcon = styled(Icon)`
