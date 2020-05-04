@@ -6,4 +6,5 @@ export interface User {
   phoneNumber: string;
   displayName: string;
   authProviderUsers: AuthProviderUser[];
+  profileImageUrl?: string;
 }
