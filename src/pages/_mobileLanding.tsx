@@ -9,7 +9,11 @@ import Icon from '../atoms/Icon';
 
 const screenshotNames = ['main', 'detail', 'search', 'write', 'login'];
 
-export default function MobileLanding() {
+interface Props {
+  className?: string;
+}
+
+export default function MobileLanding({ className }: Props) {
   const [screenshotIndex, setScreenshotIndex] = useState(0);
 
   const intervalCallback = useCallback(() => {
@@ -20,7 +24,7 @@ export default function MobileLanding() {
   useInterval(intervalCallback, 3000);
 
   return (
-    <Wrapper key="mobile">
+    <Wrapper key="mobile" className={className}>
       <ScreenshotWrapper>
         {screenshotNames.map((screenshotName, index) => (
           <Screenshot

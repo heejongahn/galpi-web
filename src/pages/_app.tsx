@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { withRouter } from 'next/router';
 
 import '../styles/reset.scss';
+import { MediaContextProvider } from '../components/Media';
 
 class MyApp extends App {
   render() {
@@ -31,7 +32,9 @@ class MyApp extends App {
           <meta property="og:image:width" content="1200" />
           <meta property="og:image:height" content="630" />
         </Head>
-        <Component {...pageProps} />
+        <MediaContextProvider>
+          <Component {...pageProps} />
+        </MediaContextProvider>
       </>
     );
   }
