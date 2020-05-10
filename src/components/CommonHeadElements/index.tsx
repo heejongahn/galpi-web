@@ -1,14 +1,14 @@
 import React from 'react';
+import Head from 'next/head';
 
 interface Props {
   title?: string;
   description?: string;
-  url?: string;
 }
 
-export default function CommonHeadElements({ title, description, url }: Props) {
+export default function CommonHeadElements({ title, description }: Props) {
   return (
-    <>
+    <Head>
       {title != null ? (
         <>
           <title>{title}</title>
@@ -23,12 +23,6 @@ export default function CommonHeadElements({ title, description, url }: Props) {
           <meta property="og:description" content={description} />
         </>
       ) : null}
-      {url != null ? (
-        <>
-          <meta property="og:url" content={url} />
-          <meta name="twitter:url" content={url} />
-        </>
-      ) : null}
-    </>
+    </Head>
   );
 }

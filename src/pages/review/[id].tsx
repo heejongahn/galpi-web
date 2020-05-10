@@ -1,19 +1,18 @@
 import React, { useCallback } from 'react';
 import { NextPage } from 'next';
-import Head from 'next/head';
 import styled from '@emotion/styled';
 import { parseISO, format } from 'date-fns';
+import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 
 import Layout from '../../components/Layout';
 import { getReview } from '../../remotes';
 import { Review } from '../../model/Review';
 import ReadingStatusBadge from '../../components/ReadingStatusBadge';
 import ScoreBadge from '../../components/ScoreBadge';
-import { Button } from '../../atoms';
 import CommonHeadElements from '../../components/CommonHeadElements';
+import { Button } from '../../atoms';
 import useMedia from '../../hooks/useMedia';
 import Icon from '../../atoms/Icon';
-import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 
 interface Props {
   review?: Review;
@@ -35,9 +34,15 @@ const ReviewDetail: NextPage<Props> = ({ review }) => {
 
   if (review == null) {
     return (
-      <Layout>
-        <h1>존재하지 않는 독후감입니다.</h1>
-      </Layout>
+      <>
+        <CommonHeadElements
+          title="갈피"
+          description="갈피는 아름다운 독후감 작성 앱입니다."
+        ></CommonHeadElements>
+        <Layout>
+          <h1>존재하지 않는 독후감입니다.</h1>
+        </Layout>
+      </>
     );
   }
 
@@ -47,9 +52,10 @@ const ReviewDetail: NextPage<Props> = ({ review }) => {
 
   return (
     <>
-      <Head>
-        <CommonHeadElements title={title} description={description} />
-      </Head>
+      <CommonHeadElements
+        title={title}
+        description={description}
+      ></CommonHeadElements>
       <Layout>
         <Header>
           <Meta>

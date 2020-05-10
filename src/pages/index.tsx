@@ -8,6 +8,7 @@ import Icon from '../atoms/Icon';
 import useInterval from '../hooks/useInterval';
 import useMedia from '../hooks/useMedia';
 import MobileLanding from './_mobileLanding';
+import CommonHeadElements from '../components/CommonHeadElements';
 
 const screenshotNames = ['main', 'detail', 'search', 'write', 'login'];
 
@@ -24,53 +25,69 @@ export default function Index() {
   const breakpoint = useMedia();
   const isMobile = breakpoint === 'md';
 
+  const title = '갈피';
+  const description = '갈피는 아름다운 독후감 관리 앱입니다.';
+
+  const headInfo = {
+    title,
+    description,
+  };
+
   if (isMobile) {
-    return <MobileLanding />;
+    return (
+      <React.Fragment key="mobile">
+        <CommonHeadElements {...headInfo} />
+        <MobileLanding />
+      </React.Fragment>
+    );
   }
 
   return (
-    <StyledLayout>
-      <Wrapper>
-        <Hero>
-          <Title>
-            갈피는 아름다운
-            <br />
-            독후감 관리 앱입니다.
-          </Title>
-          <Subtitle>
-            앱스토어 또는 구글 플레이에서 내려받고
-            <br />
-            독서 생활의 갈피를 남겨보세요.
-          </Subtitle>
-          <ButtonWrapper>
-            <StoreButton
-              href="https://apps.apple.com/kr/app/%EA%B0%88%ED%94%BC/id1470817706"
-              target="_blank"
-            >
-              <StoreImage icon={faApple}></StoreImage>
-              App Store
-            </StoreButton>
-            <StoreButton
-              href="https://play.google.com/store/apps/details?id=name.ahnheejong.galpi"
-              target="_blank"
-            >
-              <StoreImage icon={faGooglePlay}></StoreImage>
-              Google Play
-            </StoreButton>
-          </ButtonWrapper>
-        </Hero>
-        <ScreenshotWrapper>
-          {screenshotNames.map((screenshotName, index) => (
-            <Screenshot
-              key={screenshotName}
-              isActive={index === screenshotIndex}
-              src={`/screenshots/${screenshotName}.png`}
-              alt="갈피 스크린샷"
-            ></Screenshot>
-          ))}
-        </ScreenshotWrapper>
-      </Wrapper>
-    </StyledLayout>
+    <>
+      <CommonHeadElements {...headInfo} />
+      <StyledLayout key="pc">
+        <Wrapper>
+          <Hero>
+            <Title>
+              갈피는 아름다운
+              <br />
+              독후감 관리 앱입니다.
+            </Title>
+            <Subtitle>
+              앱스토어 또는 구글 플레이에서 내려받고
+              <br />
+              독서 생활의 갈피를 남겨보세요.
+            </Subtitle>
+            <ButtonWrapper>
+              <StoreButton
+                href="https://apps.apple.com/kr/app/%EA%B0%88%ED%94%BC/id1470817706"
+                target="_blank"
+              >
+                <StoreImage icon={faApple}></StoreImage>
+                App Store
+              </StoreButton>
+              <StoreButton
+                href="https://play.google.com/store/apps/details?id=name.ahnheejong.galpi"
+                target="_blank"
+              >
+                <StoreImage icon={faGooglePlay}></StoreImage>
+                Google Play
+              </StoreButton>
+            </ButtonWrapper>
+          </Hero>
+          <ScreenshotWrapper>
+            {screenshotNames.map((screenshotName, index) => (
+              <Screenshot
+                key={screenshotName}
+                isActive={index === screenshotIndex}
+                src={`/screenshots/${screenshotName}.png`}
+                alt="갈피 스크린샷"
+              ></Screenshot>
+            ))}
+          </ScreenshotWrapper>
+        </Wrapper>
+      </StyledLayout>
+    </>
   );
 }
 

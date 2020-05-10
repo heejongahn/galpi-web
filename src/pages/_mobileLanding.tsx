@@ -20,7 +20,7 @@ export default function MobileLanding() {
   useInterval(intervalCallback, 3000);
 
   return (
-    <Wrapper>
+    <Wrapper key="mobile">
       <ScreenshotWrapper>
         {screenshotNames.map((screenshotName, index) => (
           <Screenshot

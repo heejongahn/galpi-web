@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import styled from '@emotion/styled';
+
 import Logo from '../Logo';
 
 interface Props {
   className?: string;
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 const menuHeight = 56;
