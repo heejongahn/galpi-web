@@ -3,14 +3,15 @@ import styled from '@emotion/styled';
 import Logo from '../Logo';
 
 interface Props {
+  className?: string;
   children: React.ReactNode;
 }
 
 const menuHeight = 56;
 
-export default function Layout({ children }: Props) {
+export default function Layout({ className, children }: Props) {
   return (
-    <Article>
+    <Article className={className}>
       <Menu>
         <Logo height={32} />
       </Menu>
@@ -45,6 +46,7 @@ const Menu = styled.menu`
 `;
 
 const Main = styled.main`
+  width: 100%;
   margin-top: ${menuHeight}px;
   padding: 32px 32px 120px;
 `;
