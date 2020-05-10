@@ -136,6 +136,7 @@ const Title = styled.h1`
 const BookTitleWrapper = styled.div`
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
 
   margin-bottom: 8px;
 
