@@ -13,7 +13,7 @@ class MyApp extends App {
     const url = `${host}${router.asPath}`;
 
     const title = '갈피';
-    const description = '갈피는 아름다운 독후감 작성 앱입니다.';
+    const description = '갈피는 아름다운 독후감 관리 앱입니다.';
     const ogImageUrl = `${host}/og.png`;
 
     return (
@@ -23,7 +23,10 @@ class MyApp extends App {
             rel="stylesheet"
             href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Noto Serif KR:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext"
           />
-          <meta name="viewport" content="width=device-width,initial-scale=1" />
+          <meta
+            name="viewport"
+            content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+          />
           <CommonHeadElements
             title={title}
             description={description}
