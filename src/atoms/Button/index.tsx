@@ -6,13 +6,15 @@ type Props = {
   className?: string;
   children: React.ReactNode;
   // size: 'm';
-} & ({ href: string } | { onClick: () => void });
+} & ({ href: string; target?: string } | { onClick: () => void });
 
 export default function Button({ className, children, ...rest }: Props) {
   if ('href' in rest) {
     return (
-      <Link href={rest.href} passHref>
-        <AnchorWrapper className={className}>{children}</AnchorWrapper>
+      <Link href={rest.href} passHref prefetch={rest.href.startsWith('/')}>
+        <AnchorWrapper target={rest.target} className={className}>
+          {children}
+        </AnchorWrapper>
       </Link>
     );
   }
