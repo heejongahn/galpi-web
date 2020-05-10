@@ -6,14 +6,16 @@ import {
 import styled from '@emotion/styled';
 
 interface Props {
+  size?: number;
   className?: string;
   icon: FontAwesomeIconProps['icon'];
   onClick?: (e: React.MouseEvent) => void;
 }
 
-export default function Icon({ className, icon, onClick }: Props) {
+export default function Icon({ size = 24, className, icon, onClick }: Props) {
   return (
     <StyledFontAwesomeIcon
+      iconSize={size}
       className={className}
       icon={icon}
       onClick={onClick}
@@ -21,6 +23,8 @@ export default function Icon({ className, icon, onClick }: Props) {
   );
 }
 
-const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
-  font-size: 24px;
+const StyledFontAwesomeIcon = styled(FontAwesomeIcon)<{ iconSize: number }>`
+  font-size: ${(props) => props.iconSize}px;
+  width: ${(props) => props.iconSize}px;
+  height: ${(props) => props.iconSize}px;
 `;

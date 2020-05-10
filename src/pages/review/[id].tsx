@@ -66,6 +66,7 @@ const ReviewDetail: NextPage<Props> = ({ review }) => {
               <BookLinkIcon
                 onClick={openBookDetailPage}
                 icon={faExternalLinkAlt}
+                size={12}
               />
             </BookTitleWrapper>
             <AuthorWrapper>
@@ -168,7 +169,6 @@ const BookAuthor = styled.span`
 const BookLinkIcon = styled(Icon)`
   cursor: pointer;
   margin-left: 8px;
-  font-size: 12px;
 `;
 
 const Badges = styled.div`

@@ -11,7 +11,7 @@ interface Props {
 export default function Badge({ className, icon, children }: Props) {
   return (
     <Wrapper className={className}>
-      {icon != null ? <StyledIcon icon={icon}></StyledIcon> : null}
+      {icon != null ? <StyledIcon icon={icon} size={12}></StyledIcon> : null}
       {children}
     </Wrapper>
   );
@@ -31,6 +31,5 @@ const Wrapper = styled.span`
 `;
 
 const StyledIcon = styled(Icon)`
-  font-size: 0.75rem;
   margin-right: 4px;
 `;
