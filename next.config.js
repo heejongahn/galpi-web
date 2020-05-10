@@ -5,4 +5,8 @@ require('dotenv').config();
 
 module.exports = withPlugins([withSass()], {
   distDir: 'build',
+  publicRuntimeConfig: {
+    HOST: process.env.HOST,
+    API_ENDPOINT: process.env.API_ENDPOINT,
+  },
 });
