@@ -43,7 +43,7 @@ const ReviewDetail: NextPage<Props> = ({ review }) => {
 
   const title = `${review.title} – 갈피`;
   const displayName = review.user.displayName || review.user.email;
-  const description = `${displayName}님의 『${review.book.title}』} 독후감`;
+  const description = `${displayName}님의 『${review.book.title}』 독후감`;
 
   return (
     <>
