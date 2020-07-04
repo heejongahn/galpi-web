@@ -13,6 +13,7 @@ import CommonHeadElements from '../../components/CommonHeadElements';
 import { Button } from '../../atoms';
 import useMedia from '../../hooks/useMedia';
 import Icon from '../../atoms/Icon';
+import Avatar from '../../components/Avatar';
 
 interface Props {
   review?: Review;
@@ -69,17 +70,14 @@ const ReviewDetail: NextPage<Props> = ({ review }) => {
                 size={12}
               />
             </BookTitleWrapper>
-            <AuthorWrapper>
-              {review.user.profileImageUrl != null ? (
-                <Avatar src={review.user.profileImageUrl} />
-              ) : null}
-              <NameAndDate>
-                <Name>{displayName}</Name>
+            <StyledAvatar
+              user={review.user}
+              subtitle={
                 <DateInfo>
                   {parsedCreatedAt} 씀 · {parsedLastModifiedAt} 고침
                 </DateInfo>
-              </NameAndDate>
-            </AuthorWrapper>
+              }
+            />
             <Badges>
               <ReadingStatusBadge
                 readingStatus={review.readingStatus}
@@ -181,31 +179,8 @@ const StyledScoreBadge = styled(ScoreBadge)`
   margin-left: 8px;
 `;
 
-const AuthorWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  padding: 24px 0;
-`;
-
-const Avatar = styled.img`
-  width: 36px;
-  height: 36px;
-  border-radius: 100%;
-  overflow: hidden;
-
-  border: 1px solid #e2e2e2;
-
-  margin-right: 12px;
-`;
-
-const NameAndDate = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const Name = styled.div`
-  display: flex;
-  align-items: center;
+const StyledAvatar = styled(Avatar)`
+  margin: 24px 0;
 `;
 
 const DateInfo = styled.time`
