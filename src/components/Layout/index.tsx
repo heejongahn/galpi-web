@@ -13,10 +13,10 @@ const menuHeight = 56;
 export default function Layout({ className, children }: Props) {
   return (
     <Article className={className}>
+      <Main>{children}</Main>
       <Menu>
         <Logo height={32} />
       </Menu>
-      <Main>{children}</Main>
     </Article>
   );
 }
