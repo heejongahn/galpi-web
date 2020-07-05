@@ -14,6 +14,7 @@ import { Button } from '../../atoms';
 import useMedia from '../../hooks/useMedia';
 import Icon from '../../atoms/Icon';
 import Avatar from '../../components/Avatar';
+import MarkdownContent from '../../components/MarkdownContent';
 
 interface Props {
   review?: Review;
@@ -92,7 +93,7 @@ const ReviewDetail: NextPage<Props> = ({ review }) => {
             />
           ) : null}
         </Header>
-        <Body>{review.body}</Body>
+        <MarkdownContent data={review.body} />
         <Buttons>
           <AboutGalpiButton href="/">“갈피” 알아보기</AboutGalpiButton>
         </Buttons>
@@ -196,13 +197,6 @@ const DateInfo = styled.time`
 const CoverImage = styled.img`
   border: 1px solid #e2e2e2;
   cursor: pointer;
-`;
-
-const Body = styled.section`
-  margin-top: 64px;
-
-  line-height: 1.7;
-  white-space: pre-line;
 `;
 
 const Buttons = styled.div`
