@@ -48,6 +48,5 @@ const Menu = styled.menu`
 
 const Main = styled.main`
   width: 100%;
-  margin-top: ${menuHeight}px;
-  padding: 32px 32px 120px;
+  padding: ${32 + menuHeight}px 32px 120px;
 `;

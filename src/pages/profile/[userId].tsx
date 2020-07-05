@@ -116,7 +116,7 @@ export default Profile;
 
 const Reviews = styled.ul`
   margin: 0;
-  padding: 48px 0;
+  padding: 0;
 `;
 
 const ReviewWrapper = styled.a`
@@ -133,6 +133,10 @@ const ReviewWrapper = styled.a`
 
   &:hover {
     background-color: rgba(0, 0, 0, 0.04);
+  }
+
+  &:last-child {
+    margin-bottom: 0;
   }
 `;
 
