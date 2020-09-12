@@ -43,7 +43,7 @@ const StyledReactMarkdown = styled(ReactMarkdown)`
     margin-bottom: 10px;
   }
   blockquote {
-    margin: 0;
+    margin: 24px 0;
   }
   code {
     font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier,
@@ -68,7 +68,6 @@ const StyledReactMarkdown = styled(ReactMarkdown)`
     margin-bottom: 24px;
   }
   p,
-  blockquote,
   ul,
   ol,
   dl,
@@ -251,5 +250,12 @@ const StyledReactMarkdown = styled(ReactMarkdown)`
         top: 0;
       }
     }
+  }
+
+  hr {
+    margin: 48px 0;
+    border: none;
+    height: 1px;
+    background-color: #e2e2e2;
   }
 `;
