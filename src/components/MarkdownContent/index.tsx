@@ -6,7 +6,13 @@ interface Props {
 }
 
 export default function MarkdownContent({ data }: Props) {
-  return <StyledReactMarkdown source={data} linkTarget="_blank" />;
+  return (
+    <StyledReactMarkdown
+      source={data}
+      linkTarget="_blank"
+      parserOptions={{ commonmark: true }}
+    />
+  );
 }
 
 const StyledReactMarkdown = styled(ReactMarkdown)`
