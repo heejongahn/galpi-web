@@ -3,7 +3,6 @@ import {
   FontAwesomeIcon,
   FontAwesomeIconProps,
 } from '@fortawesome/react-fontawesome';
-import styled from '@emotion/styled';
 
 interface Props {
   size?: number;
@@ -14,17 +13,11 @@ interface Props {
 
 export default function Icon({ size = 24, className, icon, onClick }: Props) {
   return (
-    <StyledFontAwesomeIcon
-      iconSize={size}
+    <FontAwesomeIcon
+      style={{fontSize: size, width: size, height: size }}
       className={className}
       icon={icon}
       onClick={onClick}
     />
   );
 }
-
-const StyledFontAwesomeIcon = styled(FontAwesomeIcon)<{ iconSize: number }>`
-  font-size: ${(props) => props.iconSize}px;
-  width: ${(props) => props.iconSize}px;
-  height: ${(props) => props.iconSize}px;
-`;
