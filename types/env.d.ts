@@ -10,6 +10,11 @@ declare module 'next/config' {
     publicRuntimeConfig: {
       HOST: string;
       API_ENDPOINT: string;
+
+      FIREBASE_API_KEY: string;
+      FIREBASE_APP_ID: string;
+      FIREBASE_PROJECT_ID: string;
+
       [key: string]: string | undefined;
     };
   };

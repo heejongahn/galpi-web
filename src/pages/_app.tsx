@@ -4,6 +4,7 @@ import { withRouter } from 'next/router';
 
 import '../styles/reset.scss';
 import { MediaContextProvider } from '../components/Media';
+import { FirebaseContextProvider } from '../context/FirebaseContext';
 
 class MyApp extends App {
   render() {
@@ -32,9 +33,11 @@ class MyApp extends App {
           <meta property="og:image:width" content="1200" />
           <meta property="og:image:height" content="630" />
         </Head>
-        <MediaContextProvider>
-          <Component {...pageProps} />
-        </MediaContextProvider>
+        <FirebaseContextProvider>
+          <MediaContextProvider>
+            <Component {...pageProps} />
+          </MediaContextProvider>
+        </FirebaseContextProvider>
       </>
     );
   }
