@@ -9,6 +9,7 @@ import {
   useCallback,
 } from 'react';
 import getConfig from 'next/config';
+import { login } from '../remotes';
 
 const {
   HOST,
@@ -20,10 +21,12 @@ const {
 interface FirebaseContextProps {
   app?: firebase.app.App;
   sendLoginEmail: (email: string) => void;
+  loginWithEmailPassword: (email: string, password: string) => void;
 }
 
 export const FirebaseContext = createContext<FirebaseContextProps>({
   sendLoginEmail: () => {},
+  loginWithEmailPassword: () => {},
 });
 
 export function FirebaseContextProvider({ children }: { children: ReactNode }) {
@@ -61,8 +64,30 @@ export function FirebaseContextProvider({ children }: { children: ReactNode }) {
     [app]
   );
 
+  const loginWithEmailPassword = useCallback(
+    async (email: string, password: string) => {
+      if (app == null) {
+        return;
+      }
+
+      const { user } = await app
+        .auth()
+        .signInWithEmailAndPassword(email, password);
+
+      const token = await user?.getIdToken();
+
+      if (token) {
+        const data = await login({ token });
+        console.log(data);
+      }
+    },
+    [app]
+  );
+
   return (
-    <FirebaseContext.Provider value={{ app, sendLoginEmail }}>
+    <FirebaseContext.Provider
+      value={{ app, sendLoginEmail, loginWithEmailPassword }}
+    >
       {children}
     </FirebaseContext.Provider>
   );

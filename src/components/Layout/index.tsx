@@ -2,6 +2,8 @@ import React, { ReactNode } from 'react';
 import styled from '@emotion/styled';
 
 import Logo from '../Logo';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 interface Props {
   className?: string;
@@ -11,11 +13,20 @@ interface Props {
 const menuHeight = 56;
 
 export default function Layout({ className, children }: Props) {
+  const { pathname } = useRouter();
+
   return (
     <Article className={className}>
       <Main>{children}</Main>
       <Menu>
-        <Logo height={32} />
+        <MenuWrapper>
+          <Logo height={32} />
+          {pathname !== '/login' ? (
+            <Link href="/login">
+              <LoginLink>로그인</LoginLink>
+            </Link>
+          ) : null}
+        </MenuWrapper>
       </Menu>
     </Article>
   );
@@ -42,12 +53,28 @@ const Menu = styled.menu`
 
   display: flex;
   align-items: center;
+  justify-content: center;
   border-bottom: 0.5px solid #0e0e0e;
   background-color: rgba(255, 255, 255, 0.8);
+`;
+
+const MenuWrapper = styled.div`
+  width: 100%;
+  max-width: 1200px;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 const Main = styled.main`
   width: 100%;
   margin-top: ${menuHeight}px;
   padding: 32px 32px 120px;
+`;
+
+const LoginLink = styled.a`
+  cursor: pointer;
+  display: block;
 `;

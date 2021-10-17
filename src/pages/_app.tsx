@@ -43,4 +43,14 @@ class MyApp extends App {
   }
 }
 
+MyApp.getInitialProps = async ({ ctx }) => {
+  const { req } = ctx;
+
+  if (req) {
+    return { pageProps: { isServer: true } };
+  } else {
+    return { pageProps: { isServer: false } };
+  }
+};
+
 export default withRouter(MyApp);
