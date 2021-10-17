@@ -87,7 +87,7 @@ export default function Index() {
 }
 
 const StyledLayout = styled(Layout)`
-  max-width: 1400px;
+  max-width: 1200px;
 `;
 
 const Wrapper = styled.section`
