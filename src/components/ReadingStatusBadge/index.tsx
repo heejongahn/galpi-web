@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { Review, ReadingStatus } from '../../model/Review';
 import { Badge } from '../../atoms';
 import {

@@ -1,4 +1,3 @@
-import React from 'react';
 import { User } from '../../model/User';
 import styled from '@emotion/styled';
 import Link from 'next/link';

@@ -1,5 +1,5 @@
-import React, { useCallback } from 'react';
-import { NextPage } from 'next';
+import { useCallback } from 'react';
+import { NextPage, GetServerSideProps } from 'next';
 import styled from '@emotion/styled';
 import { parseISO, format } from 'date-fns';
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
@@ -15,6 +15,7 @@ import useMedia from '../../hooks/useMedia';
 import Icon from '../../atoms/Icon';
 import Avatar from '../../components/Avatar';
 import MarkdownContent from '../../components/MarkdownContent';
+import { getAxiosInstance } from '../../utils/axios';
 
 interface Props {
   review?: Review;
@@ -102,20 +103,23 @@ const ReviewDetail: NextPage<Props> = ({ review }) => {
   );
 };
 
-ReviewDetail.getInitialProps = async (context) => {
+export const getServerSideProps: GetServerSideProps<{
+  review: Review | undefined;
+}> = async (context) => {
   const { id } = context.query;
   if (id == null) {
-    return { review: undefined };
+    return { props: { review: undefined } };
   }
 
+  const axiosInstance = getAxiosInstance(context.req);
   const parsedId = Array.isArray(id) ? id[0] : id;
 
   try {
-    const { review } = await getReview({ id: parsedId });
-    return { review };
+    const { review } = await getReview(axiosInstance)({ id: parsedId });
+    return { props: { review } };
   } catch (e) {
     console.log(e);
-    return { review: undefined };
+    return { props: { review: undefined } };
   }
 };
 

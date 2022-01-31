@@ -1,5 +1,4 @@
-import React from 'react';
-import { NextPage } from 'next';
+import { NextPage, GetServerSideProps } from 'next';
 import styled from '@emotion/styled';
 
 import Layout from '../../components/Layout';
@@ -12,6 +11,7 @@ import { parseISO, format } from 'date-fns';
 import ReadingStatusBadge from '../../components/ReadingStatusBadge';
 import ScoreBadge from '../../components/ScoreBadge';
 import Link from 'next/link';
+import { getAxiosInstance } from '../../utils/axios';
 
 interface Props {
   user?: User;
@@ -39,14 +39,9 @@ const Profile: NextPage<Props> = ({ user, reviews }) => {
 
   return (
     <>
-      <CommonHeadElements
-        title={title}
-        description={description}
-      ></CommonHeadElements>
+      <CommonHeadElements title={title} description={description} />
       <Layout>
-        {user.profileImageUrl != null ? (
-          <Avatar user={user} subtitle="님의 공개 독후감" />
-        ) : null}
+        <Avatar user={user} subtitle="님의 공개 독후감" />
         <Reviews>
           {reviews.map((review) => {
             const {
@@ -92,23 +87,34 @@ const Profile: NextPage<Props> = ({ user, reviews }) => {
   );
 };
 
-Profile.getInitialProps = async (context) => {
-  const { userId } = context.query;
+export const getServerSideProps: GetServerSideProps<{
+  user?: User;
+  reviews: Review[];
+}> = async (context) => {
+  const { query, req } = context;
+  const { userId } = query;
+
   if (userId == null) {
-    return { reviews: [] };
+    return { props: { reviews: [] } };
   }
 
   const parsedUserId = Array.isArray(userId) ? userId[0] : userId;
 
+  const axiosInstance = getAxiosInstance(req);
+
   try {
     const [{ user }, { reviews }] = await Promise.all([
-      getProfile({ userId: parsedUserId }),
-      getReviewsByUser({ userId: parsedUserId }),
+      getProfile(axiosInstance)({ userId: parsedUserId }),
+      getReviewsByUser(axiosInstance)({ userId: parsedUserId }),
     ]);
-    return { user, reviews };
+    return {
+      props: {
+        user,
+        reviews,
+      },
+    };
   } catch (e) {
-    console.log(e);
-    return { reviews: [] };
+    return { props: { reviews: [] } };
   }
 };
 

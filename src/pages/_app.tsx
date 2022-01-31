@@ -5,13 +5,16 @@ import { withRouter } from 'next/router';
 import '../styles/reset.scss';
 import { MediaContextProvider } from '../components/Media';
 import { FirebaseContextProvider } from '../context/FirebaseContext';
+import { QueryClient, QueryClientProvider } from 'react-query';
+
+const queryClient = new QueryClient();
 
 class MyApp extends App {
   render() {
     const { Component, pageProps } = this.props;
 
     return (
-      <>
+      <QueryClientProvider client={queryClient}>
         <Head>
           <link
             rel="stylesheet"
@@ -38,7 +41,7 @@ class MyApp extends App {
             <Component {...pageProps} />
           </MediaContextProvider>
         </FirebaseContextProvider>
-      </>
+      </QueryClientProvider>
     );
   }
 }

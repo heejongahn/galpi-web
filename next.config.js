@@ -1,9 +1,6 @@
-const withPlugins = require('next-compose-plugins');
-const withSass = require('@zeit/next-sass');
-
 require('dotenv').config();
 
-module.exports = withPlugins([withSass()], {
+module.exports = {
   distDir: 'build',
   publicRuntimeConfig: {
     HOST: process.env.HOST,
@@ -12,4 +9,4 @@ module.exports = withPlugins([withSass()], {
     FIREBASE_APP_ID: process.env.FIREBASE_APP_ID,
     FIREBASE_PROJECT_ID: process.env.FIREBASE_PROJECT_ID,
   },
-});
+};

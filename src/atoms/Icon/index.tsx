@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   FontAwesomeIcon,
   FontAwesomeIconProps,
@@ -14,7 +13,7 @@ interface Props {
 export default function Icon({ size = 24, className, icon, onClick }: Props) {
   return (
     <FontAwesomeIcon
-      style={{fontSize: size, width: size, height: size }}
+      style={{ fontSize: size, width: size, height: size }}
       className={className}
       icon={icon}
       onClick={onClick}

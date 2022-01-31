@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react';
+import { ComponentProps } from 'react';
 import styled from '@emotion/styled';
 import Icon from '../Icon';
 

@@ -1,4 +1,4 @@
-import React, { FormEvent, useCallback, useContext, useState } from 'react';
+import { FormEvent, useCallback, useContext, useState } from 'react';
 
 import Layout from '../components/Layout';
 import styled from '@emotion/styled';

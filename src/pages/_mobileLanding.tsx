@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { faApple, faGooglePlay } from '@fortawesome/free-brands-svg-icons';
 import styled from '@emotion/styled';
 
