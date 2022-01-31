@@ -1,24 +1,33 @@
-import { User } from '../../model/User';
+import { ReactNode } from 'react';
 import styled from '@emotion/styled';
 import Link from 'next/link';
+import { faLaugh } from '@fortawesome/free-solid-svg-icons';
+
+import { User } from '../../model/User';
+import Icon from '../../atoms/Icon';
 
 interface Props {
   className?: string;
   user: User;
-  subtitle?: React.ReactNode;
+  title?: ReactNode;
+  subtitle?: ReactNode;
 }
 
-export default function Avatar({ className, user, subtitle }: Props) {
+export default function Avatar({ className, user, title, subtitle }: Props) {
   return (
     <Link href={`/profile/${user.id}`} passHref>
       <Wrapper className={className}>
         {user.profileImageUrl != null ? (
           <Image src={user.profileImageUrl} />
+        ) : (
+          <Icon size={24} icon={faLaugh} />
+        )}
+        {title != null || subtitle != null ? (
+          <TextWrapper>
+            {title != null ? <Title>{title}</Title> : null}
+            {subtitle != null ? <Subtitle>{subtitle}</Subtitle> : null}
+          </TextWrapper>
         ) : null}
-        <TextWrapper>
-          <Title>{user.displayName || user.email}</Title>
-          {subtitle != null ? <Subtitle>{subtitle}</Subtitle> : null}
-        </TextWrapper>
       </Wrapper>
     </Link>
   );
@@ -27,13 +36,22 @@ export default function Avatar({ className, user, subtitle }: Props) {
 const Wrapper = styled.a`
   display: inline-flex;
   align-items: center;
+  position: relative;
 
-  padding: 8px 12px;
-  border-radius: 24px;
-  transition: 0.2s background-color ease-in-out;
+  padding: 4px;
+
+  border: 1px solid #fefefe;
 
   &:hover {
-    background-color: rgba(0, 0, 0, 0.04);
+    &::after {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 100%;
+      background-color: rgba(0, 0, 0, 0.04);
+    }
   }
 `;
 

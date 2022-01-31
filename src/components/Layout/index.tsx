@@ -1,9 +1,11 @@
-import { ReactNode } from 'react';
+import { ReactNode, useMemo } from 'react';
 import styled from '@emotion/styled';
 
 import Logo from '../Logo';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import useMe from '../../queries/useMe';
+import Avatar from '../Avatar';
 
 interface Props {
   className?: string;
@@ -14,6 +16,26 @@ const menuHeight = 56;
 
 export default function Layout({ className, children }: Props) {
   const { pathname } = useRouter();
+  const { data } = useMe();
+  const user = data?.user;
+
+  const rightAdornment = useMemo(() => {
+    if (user != null) {
+      return <Avatar user={user} />;
+    }
+
+    const loginPathname = '/login';
+
+    if (pathname.startsWith(loginPathname)) {
+      return null;
+    }
+
+    return (
+      <Link href="/login">
+        <LoginLink>로그인</LoginLink>
+      </Link>
+    );
+  }, [user, pathname]);
 
   return (
     <Article className={className}>
@@ -21,11 +43,7 @@ export default function Layout({ className, children }: Props) {
       <Menu>
         <MenuWrapper>
           <Logo height={32} />
-          {pathname !== '/login' ? (
-            <Link href="/login">
-              <LoginLink>로그인</LoginLink>
-            </Link>
-          ) : null}
+          {rightAdornment}
         </MenuWrapper>
       </Menu>
     </Article>

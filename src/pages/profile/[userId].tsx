@@ -25,7 +25,7 @@ const Profile: NextPage<Props> = ({ user, reviews }) => {
         <CommonHeadElements
           title="갈피"
           description="갈피는 아름다운 독후감 작성 앱입니다."
-        ></CommonHeadElements>
+        />
         <Layout>
           <h1>존재하지 않는 사용자입니다.</h1>
         </Layout>
@@ -41,7 +41,11 @@ const Profile: NextPage<Props> = ({ user, reviews }) => {
     <>
       <CommonHeadElements title={title} description={description} />
       <Layout>
-        <Avatar user={user} subtitle="님의 공개 독후감" />
+        <Avatar
+          user={user}
+          title={user.displayName ?? user.email}
+          subtitle="님의 공개 독후감"
+        />
         <Reviews>
           {reviews.map((review) => {
             const {

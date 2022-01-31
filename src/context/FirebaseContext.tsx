@@ -1,5 +1,4 @@
 import firebase from 'firebase/app';
-
 import 'firebase/auth';
 import {
   createContext,
@@ -9,14 +8,19 @@ import {
   useCallback,
 } from 'react';
 import getConfig from 'next/config';
-import { login } from '../remotes';
+import Cookies from 'universal-cookie';
+import { addDays } from 'date-fns';
 
-const {
-  HOST,
-  FIREBASE_API_KEY,
-  FIREBASE_APP_ID,
-  FIREBASE_PROJECT_ID,
-} = getConfig().publicRuntimeConfig;
+import { login } from '../remotes';
+import { getAxiosInstance } from '../utils/axios';
+import {
+  COOKIE_KEY_ACCESS_TOKEN,
+  COOKIE_KEY_REFRESH_TOKEN,
+} from '../constants';
+import useMe from '../queries/useMe';
+
+const { HOST, FIREBASE_API_KEY, FIREBASE_APP_ID, FIREBASE_PROJECT_ID } =
+  getConfig().publicRuntimeConfig;
 
 interface FirebaseContextProps {
   app?: firebase.app.App;
@@ -31,6 +35,8 @@ export const FirebaseContext = createContext<FirebaseContextProps>({
 
 export function FirebaseContextProvider({ children }: { children: ReactNode }) {
   const [app, setApp] = useState<firebase.app.App | undefined>(undefined);
+  const axiosInstance = getAxiosInstance();
+  const { refetch } = useMe({ enabled: false });
 
   useEffect(() => {
     if (app != null) {
@@ -77,8 +83,17 @@ export function FirebaseContextProvider({ children }: { children: ReactNode }) {
       const token = await user?.getIdToken();
 
       if (token) {
-        const data = await login({ token });
-        console.log(data);
+        const data = await login(axiosInstance)({ token });
+        const cookies = new Cookies();
+        const now = new Date();
+
+        cookies.set(COOKIE_KEY_ACCESS_TOKEN, data.token, {
+          expires: addDays(now, 7),
+        });
+        cookies.set(COOKIE_KEY_REFRESH_TOKEN, data.refreshToken, {
+          expires: addDays(now, 28),
+        });
+        refetch();
       }
     },
     [app]

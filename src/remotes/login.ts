@@ -1,4 +1,4 @@
-import axios from 'axios';
+import type { AxiosInstance } from 'axios';
 
 interface Params {
   token: string;
@@ -9,10 +9,12 @@ interface Response {
   refreshToken: string;
 }
 
-export async function login({ token }: Params) {
-  const { data } = await axios.post<Response>(`/api/login`, {
-    token,
-  });
+export function login(axiosInstance: AxiosInstance) {
+  return async function ({ token }: Params) {
+    const { data } = await axiosInstance.post<Response>(`/register/firebase`, {
+      token,
+    });
 
-  return data;
+    return data;
+  };
 }
