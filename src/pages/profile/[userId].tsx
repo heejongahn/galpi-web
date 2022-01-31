@@ -46,46 +46,50 @@ const Profile: NextPage<Props> = ({ user, reviews }) => {
           title={user.displayName ?? user.email}
           subtitle="님의 공개 독후감"
         />
-        <Reviews>
-          {reviews.map((review) => {
-            const {
-              book,
-              title,
-              createdAt,
-              lastModifiedAt,
-              readingStatus,
-              stars,
-            } = review;
+        {reviews.length > 0 ? (
+          <Reviews>
+            {reviews.map((review) => {
+              const {
+                book,
+                title,
+                createdAt,
+                lastModifiedAt,
+                readingStatus,
+                stars,
+              } = review;
 
-            const [parsedCreatedAt, parsedLastModifiedAt] =
-              review == null
-                ? ['', '']
-                : [createdAt, lastModifiedAt].map((dateString) =>
-                    format(parseISO(dateString), 'yyyy. M. d')
-                  );
+              const [parsedCreatedAt, parsedLastModifiedAt] =
+                review == null
+                  ? ['', '']
+                  : [createdAt, lastModifiedAt].map((dateString) =>
+                      format(parseISO(dateString), 'yyyy. M. d')
+                    );
 
-            return (
-              <Link passHref href={`/review/${review.id}`}>
-                <ReviewWrapper>
-                  <Title>{title}</Title>
-                  <BookTitleWrapper>
-                    <BookTitle>{book.title}</BookTitle>
-                    <BookAuthor>{book.author}</BookAuthor>
-                  </BookTitleWrapper>
-                  <DateInfo>
-                    {parsedCreatedAt} 씀 · {parsedLastModifiedAt} 고침
-                  </DateInfo>
-                  <Badges>
-                    <ReadingStatusBadge
-                      readingStatus={readingStatus}
-                    ></ReadingStatusBadge>
-                    <StyledScoreBadge score={stars}></StyledScoreBadge>
-                  </Badges>
-                </ReviewWrapper>
-              </Link>
-            );
-          })}
-        </Reviews>
+              return (
+                <Link passHref href={`/review/${review.id}`}>
+                  <ReviewWrapper>
+                    <Title>{title}</Title>
+                    <BookTitleWrapper>
+                      <BookTitle>{book.title}</BookTitle>
+                      <BookAuthor>{book.author}</BookAuthor>
+                    </BookTitleWrapper>
+                    <DateInfo>
+                      {parsedCreatedAt} 씀 · {parsedLastModifiedAt} 고침
+                    </DateInfo>
+                    <Badges>
+                      <ReadingStatusBadge
+                        readingStatus={readingStatus}
+                      ></ReadingStatusBadge>
+                      <StyledScoreBadge score={stars}></StyledScoreBadge>
+                    </Badges>
+                  </ReviewWrapper>
+                </Link>
+              );
+            })}
+          </Reviews>
+        ) : (
+          <div>공개 독후감이 없습니다.</div>
+        )}
       </Layout>
     </>
   );
