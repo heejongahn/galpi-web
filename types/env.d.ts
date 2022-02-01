@@ -6,7 +6,9 @@ declare namespace NodeJS {
 
 declare module 'next/config' {
   declare const _default: () => {
-    serverRuntimeConfig: {};
+    serverRuntimeConfig: {
+      KAKAOTALK_REST_API_KEY: string;
+    };
     publicRuntimeConfig: {
       HOST: string;
       API_ENDPOINT: string;

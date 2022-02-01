@@ -2,6 +2,9 @@ require('dotenv').config();
 
 module.exports = {
   distDir: 'build',
+  serverRuntimeConfig: {
+    KAKAOTALK_REST_API_KEY: process.env.KAKAOTALK_REST_API_KEY,
+  },
   publicRuntimeConfig: {
     HOST: process.env.HOST,
     API_ENDPOINT: process.env.API_ENDPOINT,
