@@ -1,9 +1,12 @@
 import type { AxiosInstance } from 'axios';
 import getConfig from 'next/config';
-import { Review } from '../model/Review';
+import { Review, ReviewPayload } from '../model/Review';
+import { RevisionPayload } from '../model/Revision';
 
 interface Params {
-  id: string;
+  bookId: string;
+  reviewPayload: ReviewPayload;
+  revisionPayload: RevisionPayload;
 }
 
 interface Response {
@@ -11,11 +14,12 @@ interface Response {
 }
 
 export function createReview(axiosInstance: AxiosInstance) {
-  return async function ({ id }: Params) {
+  return async function (params: Params) {
     const { publicRuntimeConfig } = getConfig();
 
     const { data } = await axiosInstance.post<Response>(
-      `${publicRuntimeConfig.API_ENDPOINT}/review/get?id=${id}`
+      `${publicRuntimeConfig.API_ENDPOINT}/review/create`,
+      { data: params }
     );
     return data;
   };
