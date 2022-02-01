@@ -16,8 +16,6 @@ export default function MarkdownContent({ data }: Props) {
 }
 
 const StyledReactMarkdown = styled(ReactMarkdown)`
-  margin-top: 3em;
-
   p,
   li {
     word-break: keep-all;

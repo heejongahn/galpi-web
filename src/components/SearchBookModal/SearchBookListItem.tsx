@@ -1,7 +1,6 @@
 import {
   HStack,
   StackProps,
-  Image,
   Text,
   VStack,
   Divider,
@@ -11,13 +10,25 @@ import {
 import { BookPayload } from '../../model/Book';
 
 interface Props extends StackProps {
+  isSelected: boolean;
   book: BookPayload;
 }
 
-export default function SearchBookListItem({ book, ...props }: Props) {
+export default function SearchBookListItem({
+  isSelected,
+  book,
+  ...props
+}: Props) {
   return (
     <HStack as="li" overflow="visible" {...props}>
-      <Button width="100%" height="80px" variant="outline">
+      <Button
+        width="100%"
+        height="80px"
+        borderColor={isSelected ? 'gray.400' : 'gray.200'}
+        borderStyle={isSelected ? 'solid' : 'dashed'}
+        backgroundColor={isSelected ? 'rgba(0, 0, 0, 0.04)' : 'transparent'}
+        variant="outline"
+      >
         <HStack width="100%" spacing="8px" align="center">
           <Avatar borderRadius="4px" size="md" src={book.imageUri} />
           <VStack

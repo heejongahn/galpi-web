@@ -52,7 +52,7 @@ export default function Index() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </FormControl>
-          <Button htmlType="submit">로그인</Button>
+          <Button type="submit">로그인</Button>
         </VStack>
       </form>
     </Layout>

@@ -3,6 +3,7 @@ import { NextPage, GetServerSideProps } from 'next';
 import styled from '@emotion/styled';
 import { parseISO, format } from 'date-fns';
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
+import { Heading, VStack, Text } from '@chakra-ui/react';
 
 import Layout from '../../components/Layout';
 import { getReview } from '../../remotes';
@@ -15,7 +16,6 @@ import Icon from '../../atoms/Icon';
 import UserAvatar from '../../components/UserAvatar';
 import MarkdownContent from '../../components/MarkdownContent';
 import { getAxiosInstance } from '../../utils/axios';
-import { Heading, Button } from '@chakra-ui/react';
 
 interface Props {
   review?: Review;
@@ -49,7 +49,9 @@ const ReviewDetail: NextPage<Props> = ({ review }) => {
     );
   }
 
-  const title = `${review.title} – 갈피`;
+  const reviewTitle = review.title || '(제목 없음)';
+
+  const title = `${reviewTitle} – 갈피`;
   const displayName = review.user.displayName || review.user.email;
   const description = `${displayName}님의 『${review.book.title}』 독후감`;
 
@@ -57,44 +59,46 @@ const ReviewDetail: NextPage<Props> = ({ review }) => {
     <>
       <CommonHeadElements title={title} description={description} />
       <Layout>
-        <Header>
-          <Meta>
-            <Heading as="h1">{review.title}</Heading>
-            <BookTitleWrapper>
-              <BookTitle>{review.book.title}</BookTitle>
-              <BookAuthor>{review.book.author}</BookAuthor>
-              <BookLinkIcon
-                onClick={openBookDetailPage}
-                icon={faExternalLinkAlt}
-                size={12}
+        <VStack align="stretch" spacing="48px">
+          <Header>
+            <Meta>
+              <Heading as="h1">{reviewTitle}</Heading>
+              <BookTitleWrapper>
+                <BookTitle>{review.book.title}</BookTitle>
+                <BookAuthor>{review.book.author}</BookAuthor>
+                <BookLinkIcon
+                  onClick={openBookDetailPage}
+                  icon={faExternalLinkAlt}
+                  size={12}
+                />
+              </BookTitleWrapper>
+              <StyledAvatar
+                user={review.user}
+                title={review.user.displayName ?? review.user.email}
+                subtitle={
+                  <DateInfo>
+                    {parsedCreatedAt} 씀 · {parsedLastModifiedAt} 고침
+                  </DateInfo>
+                }
               />
-            </BookTitleWrapper>
-            <StyledAvatar
-              user={review.user}
-              subtitle={
-                <DateInfo>
-                  {parsedCreatedAt} 씀 · {parsedLastModifiedAt} 고침
-                </DateInfo>
-              }
-            />
-            <Badges>
-              <ReadingStatusBadge
-                readingStatus={review.readingStatus}
-              ></ReadingStatusBadge>
-              <StyledScoreBadge score={review.stars}></StyledScoreBadge>
-            </Badges>
-          </Meta>
-          {review.book.imageUri && breakpoint !== 'md' ? (
-            <CoverImage
-              src={review.book.imageUri}
-              onClick={openBookDetailPage}
-            />
-          ) : null}
-        </Header>
-        <MarkdownContent data={review.body} />
-        <Buttons>
-          <AboutGalpiButton href="/">“갈피” 알아보기</AboutGalpiButton>
-        </Buttons>
+              <Badges>
+                <ReadingStatusBadge readingStatus={review.readingStatus} />
+                <StyledScoreBadge score={review.stars} />
+              </Badges>
+            </Meta>
+            {review.book.imageUri && breakpoint !== 'md' ? (
+              <CoverImage
+                src={review.book.imageUri}
+                onClick={openBookDetailPage}
+              />
+            ) : null}
+          </Header>
+          {review.body === '' ? (
+            <Text>(내용이 없습니다.)</Text>
+          ) : (
+            <MarkdownContent data={review.body} />
+          )}
+        </VStack>
       </Layout>
     </>
   );
@@ -193,14 +197,4 @@ const DateInfo = styled.time`
 const CoverImage = styled.img`
   border: 1px solid #e2e2e2;
   cursor: pointer;
-`;
-
-const Buttons = styled.div`
-  display: flex;
-  align-items: center;
-  margin-top: 72px;
-`;
-
-const AboutGalpiButton = styled(Button)`
-  flex: 1 1 50%;
 `;

@@ -12,6 +12,9 @@ import {
   Center,
   Spinner,
   Text,
+  ModalFooter,
+  HStack,
+  Button,
 } from '@chakra-ui/react';
 import { useDebounce } from 'use-debounce';
 import { useState } from 'react';
@@ -28,13 +31,17 @@ export default function SearchBookModal({ onClose, ...props }: Props) {
   const { data, isLoading } = useBooks({ keyword });
   const books = data?.pages.flat() ?? [];
 
+  const [selectedBookIsbn, setSelectedBookIsbn] = useState<string | null>(null);
+  const selectedBook = books.find((book) => book.isbn === selectedBookIsbn);
+
   const { push } = useRouter();
 
-  const { mutate: createUnreadReview } = useCreateReviewWithoutRevision({
-    onSuccess: ({ review }) => {
-      push(`/review/${review.id}`);
-    },
-  });
+  const { mutate: createUnreadReview, isLoading: isCreatingUnreadReview } =
+    useCreateReviewWithoutRevision({
+      onSuccess: ({ review }) => {
+        push(`/review/${review.id}`);
+      },
+    });
 
   const child = isLoading ? (
     <Center width="100%" height="300px">
@@ -53,13 +60,23 @@ export default function SearchBookModal({ onClose, ...props }: Props) {
       margin="0 -8px"
     >
       <VStack as="ul" align="stretch" spacing="12px">
-        {books.map((book) => (
-          <SearchBookListItem
-            key={book.isbn}
-            book={book}
-            onClick={() => createUnreadReview({ bookPayload: book })}
-          />
-        ))}
+        {books.map((book) => {
+          const isSelected = book.isbn === selectedBookIsbn;
+          return (
+            <SearchBookListItem
+              key={book.isbn}
+              book={book}
+              isSelected={isSelected}
+              onClick={() => {
+                if (isSelected) {
+                  setSelectedBookIsbn(null);
+                } else {
+                  setSelectedBookIsbn(book.isbn);
+                }
+              }}
+            />
+          );
+        })}
       </VStack>
     </Box>
   );
@@ -72,7 +89,7 @@ export default function SearchBookModal({ onClose, ...props }: Props) {
       {...props}
     >
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent position="relative" overflow="hidden">
         <ModalHeader>책 검색</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
@@ -90,6 +107,35 @@ export default function SearchBookModal({ onClose, ...props }: Props) {
             {child}
           </VStack>
         </ModalBody>
+        <ModalFooter
+          position="absolute"
+          left="0"
+          bottom="0"
+          width="100%"
+          transition="transform 0.15s ease-in-out, opacity 0.15s ease-in-out"
+          transform={selectedBook != null ? 'none' : 'translateY(100%)'}
+          opacity={selectedBook != null ? 1 : 0}
+          backgroundColor="#fefefe"
+          borderTopColor="gray.200"
+          borderTopWidth="1px"
+          borderTopStyle="solid"
+        >
+          <HStack align="center" spacing="12px">
+            <Button
+              variant="outline"
+              backgroundColor="white"
+              isLoading={isCreatingUnreadReview}
+              onClick={() => {
+                if (selectedBook == null) {
+                  return;
+                }
+                createUnreadReview({ bookPayload: selectedBook });
+              }}
+            >
+              독후감 없이 책만 먼저 추가하기
+            </Button>
+          </HStack>
+        </ModalFooter>
       </ModalContent>
     </Modal>
   );

@@ -1,5 +1,6 @@
 export * from './createBook';
 export * from './createReview';
+export * from './createUnreadReview';
 export * from './getMe';
 export * from './getReview';
 export * from './getBooks';
