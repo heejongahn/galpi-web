@@ -7,6 +7,12 @@ export enum ReadingStatus {
   finishedReading = 'finishedReading',
 }
 
+export interface ReviewPayload {
+  isPublic: boolean;
+  readingStartedAt?: number;
+  readingFinishedAt?: number;
+}
+
 export interface Review {
   id: string;
 
