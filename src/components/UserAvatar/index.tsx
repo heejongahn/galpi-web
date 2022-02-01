@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import styled from '@emotion/styled';
-import Link from 'next/link';
 import { faLaugh } from '@fortawesome/free-solid-svg-icons';
+import { Avatar as ChakraAvatar } from '@chakra-ui/react';
 
 import { User } from '../../model/User';
 import Icon from '../../atoms/Icon';
@@ -13,27 +13,30 @@ interface Props {
   subtitle?: ReactNode;
 }
 
-export default function Avatar({ className, user, title, subtitle }: Props) {
+export default function UserAvatar({
+  className,
+  user,
+  title,
+  subtitle,
+}: Props) {
   return (
-    <Link href={`/profile/${user.id}`} passHref>
-      <Wrapper className={className}>
-        {user.profileImageUrl != null ? (
-          <Image src={user.profileImageUrl} />
-        ) : (
-          <Icon size={24} icon={faLaugh} />
-        )}
-        {title != null || subtitle != null ? (
-          <TextWrapper>
-            {title != null ? <Title>{title}</Title> : null}
-            {subtitle != null ? <Subtitle>{subtitle}</Subtitle> : null}
-          </TextWrapper>
-        ) : null}
-      </Wrapper>
-    </Link>
+    <Wrapper className={className}>
+      <ChakraAvatar
+        size="sm"
+        src={user.profileImageUrl}
+        icon={<Icon size={16} icon={faLaugh} color="#fff" />}
+      />
+      {title != null || subtitle != null ? (
+        <TextWrapper>
+          {title != null ? <Title>{title}</Title> : null}
+          {subtitle != null ? <Subtitle>{subtitle}</Subtitle> : null}
+        </TextWrapper>
+      ) : null}
+    </Wrapper>
   );
 }
 
-const Wrapper = styled.a`
+const Wrapper = styled.div`
   display: inline-flex;
   align-items: center;
   position: relative;
@@ -53,15 +56,6 @@ const Wrapper = styled.a`
       background-color: rgba(0, 0, 0, 0.04);
     }
   }
-`;
-
-const Image = styled.img`
-  width: 36px;
-  height: 36px;
-  border-radius: 100%;
-  overflow: hidden;
-
-  border: 1px solid #e2e2e2;
 `;
 
 const TextWrapper = styled.div`

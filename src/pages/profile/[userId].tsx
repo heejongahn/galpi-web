@@ -6,7 +6,7 @@ import { getProfile, getReviewsByUser } from '../../remotes';
 import { Review } from '../../model/Review';
 import CommonHeadElements from '../../components/CommonHeadElements';
 import { User } from '../../model/User';
-import Avatar from '../../components/Avatar';
+import UserAvatar from '../../components/UserAvatar';
 import { parseISO, format } from 'date-fns';
 import ReadingStatusBadge from '../../components/ReadingStatusBadge';
 import ScoreBadge from '../../components/ScoreBadge';
@@ -41,7 +41,7 @@ const Profile: NextPage<Props> = ({ user, reviews }) => {
     <>
       <CommonHeadElements title={title} description={description} />
       <Layout>
-        <Avatar
+        <UserAvatar
           user={user}
           title={user.displayName ?? user.email}
           subtitle="님의 공개 독후감"

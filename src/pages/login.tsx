@@ -1,10 +1,16 @@
 import { FormEvent, useCallback, useContext, useState } from 'react';
+import {
+  Input,
+  Button,
+  VStack,
+  FormControl,
+  FormLabel,
+  Heading,
+} from '@chakra-ui/react';
 
 import Layout from '../components/Layout';
-import styled from '@emotion/styled';
-import TextField from '../components/TextField';
-import { Button } from '../atoms';
 import { FirebaseContext } from '../context/FirebaseContext';
+import CommonHeadElements from '../components/CommonHeadElements';
 
 export default function Index() {
   const [email, setEmail] = useState('');
@@ -22,33 +28,33 @@ export default function Index() {
 
   return (
     <Layout>
-      <Title>로그인</Title>
+      <CommonHeadElements title="로그인" />
       <form onSubmit={handleSubmit}>
-        <StyledTextField
-          id="email"
-          label="이메일"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <StyledTextField
-          id="password"
-          label="비밀번호"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <Button onClick={() => {}}>로그인</Button>
+        <VStack spacing="24px" align="flex-end">
+          <Heading as="h1" alignSelf="flex-start">
+            반가워요!
+          </Heading>
+          <FormControl isRequired>
+            <FormLabel htmlFor="email">이메일 주소</FormLabel>
+            <Input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </FormControl>
+          <FormControl isRequired>
+            <FormLabel htmlFor="password">비밀번호</FormLabel>
+            <Input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </FormControl>
+          <Button htmlType="submit">로그인</Button>
+        </VStack>
       </form>
     </Layout>
   );
 }
-
-const Title = styled.h1`
-  font-size: 48px;
-  margin-bottom: 24px;
-`;
-
-const StyledTextField = styled(TextField)`
-  margin-bottom: 24px;
-`;

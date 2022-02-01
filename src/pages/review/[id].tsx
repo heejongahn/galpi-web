@@ -10,12 +10,12 @@ import { Review } from '../../model/Review';
 import ReadingStatusBadge from '../../components/ReadingStatusBadge';
 import ScoreBadge from '../../components/ScoreBadge';
 import CommonHeadElements from '../../components/CommonHeadElements';
-import { Button } from '../../atoms';
 import useMedia from '../../hooks/useMedia';
 import Icon from '../../atoms/Icon';
-import Avatar from '../../components/Avatar';
+import UserAvatar from '../../components/UserAvatar';
 import MarkdownContent from '../../components/MarkdownContent';
 import { getAxiosInstance } from '../../utils/axios';
+import { Heading, Button } from '@chakra-ui/react';
 
 interface Props {
   review?: Review;
@@ -59,7 +59,7 @@ const ReviewDetail: NextPage<Props> = ({ review }) => {
       <Layout>
         <Header>
           <Meta>
-            <Title>{review.title}</Title>
+            <Heading as="h1">{review.title}</Heading>
             <BookTitleWrapper>
               <BookTitle>{review.book.title}</BookTitle>
               <BookAuthor>{review.book.author}</BookAuthor>
@@ -135,11 +135,6 @@ const Meta = styled.div`
   align-items: flex-start;
 `;
 
-const Title = styled.h1`
-  font-size: 3rem;
-  margin-bottom: 8px;
-`;
-
 const BookTitleWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -181,7 +176,7 @@ const StyledScoreBadge = styled(ScoreBadge)`
   margin-left: 8px;
 `;
 
-const StyledAvatar = styled(Avatar)`
+const StyledAvatar = styled(UserAvatar)`
   margin: 24px 0;
 `;
 

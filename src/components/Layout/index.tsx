@@ -5,7 +5,7 @@ import Logo from '../Logo';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import useMe from '../../queries/useMe';
-import Avatar from '../Avatar';
+import UserAvatar from '../UserAvatar';
 
 interface Props {
   className?: string;
@@ -21,7 +21,7 @@ export default function Layout({ className, children }: Props) {
 
   const rightAdornment = useMemo(() => {
     if (user != null) {
-      return <Avatar user={user} />;
+      return <UserAvatar user={user} />;
     }
 
     const loginPathname = '/login';

@@ -1,11 +1,12 @@
 import { useMemo } from 'react';
 import { Review, ReadingStatus } from '../../model/Review';
-import { Badge } from '../../atoms';
 import {
   faShoppingBasket,
   faSpinner,
   faCheck,
 } from '@fortawesome/free-solid-svg-icons';
+import { Badge, Text, HStack } from '@chakra-ui/react';
+import Icon from '../../atoms/Icon';
 
 interface Props {
   readingStatus: Review['readingStatus'];
@@ -28,8 +29,11 @@ export default function ReadingStatusBadge({
   }, []);
 
   return (
-    <Badge className={className} icon={icon}>
-      {label}
+    <Badge className={className}>
+      <HStack align="center" spacing="4px">
+        <Text>{label}</Text>
+        <Icon icon={icon} size={12} />
+      </HStack>
     </Badge>
   );
 }
