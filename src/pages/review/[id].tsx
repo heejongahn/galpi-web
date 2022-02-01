@@ -41,7 +41,7 @@ const ReviewDetail: NextPage<Props> = ({ review }) => {
         <CommonHeadElements
           title="갈피"
           description="갈피는 아름다운 독후감 작성 앱입니다."
-        ></CommonHeadElements>
+        />
         <Layout>
           <h1>존재하지 않는 독후감입니다.</h1>
         </Layout>
@@ -55,10 +55,7 @@ const ReviewDetail: NextPage<Props> = ({ review }) => {
 
   return (
     <>
-      <CommonHeadElements
-        title={title}
-        description={description}
-      ></CommonHeadElements>
+      <CommonHeadElements title={title} description={description} />
       <Layout>
         <Header>
           <Meta>
