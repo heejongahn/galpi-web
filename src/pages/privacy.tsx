@@ -1,5 +1,6 @@
-import Layout from '../components/Layout';
 import styled from '@emotion/styled';
+
+import Layout from '../components/Layout';
 
 export default function Index() {
   return (

@@ -1,11 +1,11 @@
+import { Heading, Button, HStack, VStack } from '@chakra-ui/react';
 import { NextPage } from 'next';
 import '@toast-ui/editor/dist/toastui-editor.css';
-import { Heading, Button, HStack, VStack } from '@chakra-ui/react';
 
-import Layout from '../../components/Layout';
 import CommonHeadElements from '../../components/CommonHeadElements';
 // import { getAxiosInstance } from '../../utils/axios';
 import ToastEditor from '../../components/Editor';
+import Layout from '../../components/Layout';
 
 const WriteReview: NextPage = () => {
   // const axios = getAxiosInstance();

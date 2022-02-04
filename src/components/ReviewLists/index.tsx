@@ -1,13 +1,4 @@
-import { NextPage } from 'next';
-import styled from '@emotion/styled';
-
-import { Review } from '../../model/Review';
-import { parseISO, format } from 'date-fns';
-import ReadingStatusBadge from '../ReadingStatusBadge';
-import ScoreBadge from '../ScoreBadge';
-import Link from 'next/link';
 import {
-  Center,
   Flex,
   Tab,
   TabList,
@@ -16,6 +7,14 @@ import {
   Tabs,
   VStack,
 } from '@chakra-ui/react';
+import styled from '@emotion/styled';
+import { parseISO, format } from 'date-fns';
+import { NextPage } from 'next';
+import Link from 'next/link';
+
+import { Review } from '../../model/Review';
+import ReadingStatusBadge from '../ReadingStatusBadge';
+import ScoreBadge from '../ScoreBadge';
 
 interface Props {
   readReviews: Review[];
@@ -42,7 +41,7 @@ const ReviewLists: NextPage<Props> = ({ readReviews, unreadReviews }) => {
           ].map((dateString) => format(parseISO(dateString), 'yyyy. M. d'));
 
           return (
-            <li>
+            <li key={review.id}>
               <Link passHref href={`/review/${review.id}`}>
                 <ReviewWrapper>
                   <Title>{title || '(제목 없음)'}</Title>
@@ -73,19 +72,12 @@ const ReviewLists: NextPage<Props> = ({ readReviews, unreadReviews }) => {
     unreadReviews.length > 0 ? (
       <Reviews align="stretch" spacing="12px" as="ol">
         {unreadReviews.map((review) => {
-          const {
-            book,
-            title,
-            createdAt,
-            lastModifiedAt,
-            readingStatus,
-            stars,
-          } = review;
+          const { book, createdAt } = review;
 
           const parsedCreatedAt = format(parseISO(createdAt), 'yyyy. M. d');
 
           return (
-            <li>
+            <li key={review.id}>
               <Link passHref href={`/review/${review.id}`}>
                 <ReviewWrapper>
                   <BookTitleWrapper>

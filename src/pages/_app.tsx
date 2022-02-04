@@ -1,12 +1,12 @@
+import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import App from 'next/app';
 import Head from 'next/head';
 import { withRouter } from 'next/router';
-import { ChakraProvider, extendTheme } from '@chakra-ui/react';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 import '../styles/reset.scss';
 import { MediaContextProvider } from '../components/Media';
 import { FirebaseContextProvider } from '../context/FirebaseContext';
-import { QueryClient, QueryClientProvider } from 'react-query';
 
 const queryClient = new QueryClient();
 

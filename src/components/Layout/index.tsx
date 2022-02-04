@@ -1,11 +1,3 @@
-import { ReactNode, useMemo, useState } from 'react';
-import styled from '@emotion/styled';
-import NextLink from 'next/link';
-import { useRouter } from 'next/router';
-
-import Logo from '../Logo';
-import useMe from '../../queries/useMe';
-import UserAvatar from '../UserAvatar';
 import {
   Menu,
   MenuButton,
@@ -14,13 +6,25 @@ import {
   MenuDivider,
   IconButton,
 } from '@chakra-ui/react';
-import Icon from '../../atoms/Icon';
+import styled from '@emotion/styled';
 import {
   faPlus,
   faSignOutAlt,
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
+import NextLink from 'next/link';
+import { useRouter } from 'next/router';
+import { ReactNode, useMemo, useState } from 'react';
+
+import Icon from '../../atoms/Icon';
+import useMe from '../../queries/useMe';
+import Logo from '../Logo';
 import SearchBookModal from '../SearchBookModal';
+import UserAvatar from '../UserAvatar';
+
+
+
+
 
 interface Props {
   className?: string;

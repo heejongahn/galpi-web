@@ -1,13 +1,13 @@
 import { NextPage, GetServerSideProps } from 'next';
 
-import Layout from '../../components/Layout';
-import { getProfile, getReviewsByUser } from '../../remotes';
-import { Review } from '../../model/Review';
 import CommonHeadElements from '../../components/CommonHeadElements';
-import { User } from '../../model/User';
-import UserAvatar from '../../components/UserAvatar';
-import { getAxiosInstance } from '../../utils/axios';
+import Layout from '../../components/Layout';
 import ReviewLists from '../../components/ReviewLists';
+import UserAvatar from '../../components/UserAvatar';
+import { Review } from '../../model/Review';
+import { User } from '../../model/User';
+import { getProfile, getReviewsByUser } from '../../remotes';
+import { getAxiosInstance } from '../../utils/axios';
 
 interface Props {
   user?: User;

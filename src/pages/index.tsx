@@ -1,14 +1,15 @@
-import { useState, useCallback } from 'react';
+import { Heading, VStack, Button, Link, HStack } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { faApple, faGooglePlay } from '@fortawesome/free-brands-svg-icons';
+import { useState, useCallback } from 'react';
 
-import Layout from '../components/Layout';
 import Icon from '../atoms/Icon';
+import CommonHeadElements from '../components/CommonHeadElements';
+import Layout from '../components/Layout';
+import { Media } from '../components/Media';
 import useInterval from '../hooks/useInterval';
 import MobileLanding from './_mobileLanding';
-import CommonHeadElements from '../components/CommonHeadElements';
-import { Media } from '../components/Media';
-import { Heading, VStack, Button, Link, HStack } from '@chakra-ui/react';
+
 
 const screenshotNames = ['main', 'detail', 'search', 'write', 'login'];
 

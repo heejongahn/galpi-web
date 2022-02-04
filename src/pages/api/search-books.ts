@@ -1,11 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import getConfig from 'next/config';
 
-import { getAxiosInstance } from '../../utils/axios';
 import {
   BookPayloadFromKakao,
   parseBookPayloadFromKakao,
 } from '../../model/Book';
+import { getAxiosInstance } from '../../utils/axios';
 
 const kakaoApiEndpoint = 'https://dapi.kakao.com/v3/search/book';
 

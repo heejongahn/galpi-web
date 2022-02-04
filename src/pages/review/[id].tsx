@@ -1,20 +1,19 @@
-import { useCallback } from 'react';
-import { NextPage, GetServerSideProps } from 'next';
-import styled from '@emotion/styled';
-import { parseISO, format } from 'date-fns';
-import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 import { Heading, VStack, Text } from '@chakra-ui/react';
+import styled from '@emotion/styled';
+import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
+import { parseISO, format } from 'date-fns';
+import { NextPage, GetServerSideProps } from 'next';
 
+import Icon from '../../atoms/Icon';
+import CommonHeadElements from '../../components/CommonHeadElements';
 import Layout from '../../components/Layout';
-import { getReview } from '../../remotes';
-import { Review } from '../../model/Review';
+import MarkdownContent from '../../components/MarkdownContent';
 import ReadingStatusBadge from '../../components/ReadingStatusBadge';
 import ScoreBadge from '../../components/ScoreBadge';
-import CommonHeadElements from '../../components/CommonHeadElements';
-import useMedia from '../../hooks/useMedia';
-import Icon from '../../atoms/Icon';
 import UserAvatar from '../../components/UserAvatar';
-import MarkdownContent from '../../components/MarkdownContent';
+import useMedia from '../../hooks/useMedia';
+import { Review } from '../../model/Review';
+import { getReview } from '../../remotes';
 import { getAxiosInstance } from '../../utils/axios';
 
 interface Props {
@@ -31,9 +30,9 @@ const ReviewDetail: NextPage<Props> = ({ review }) => {
           format(parseISO(dateString), 'yyyy. M. d')
         );
 
-  const openBookDetailPage = useCallback(() => {
+  const openBookDetailPage = () => {
     window.open(review?.book.linkUri, '_blank');
-  }, []);
+  };
 
   if (review == null) {
     return (

@@ -1,10 +1,10 @@
-import { ReactNode } from 'react';
+import { Avatar as ChakraAvatar } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { faLaugh } from '@fortawesome/free-solid-svg-icons';
-import { Avatar as ChakraAvatar } from '@chakra-ui/react';
+import { ReactNode } from 'react';
 
-import { User } from '../../model/User';
 import Icon from '../../atoms/Icon';
+import { User } from '../../model/User';
 
 interface Props {
   className?: string;

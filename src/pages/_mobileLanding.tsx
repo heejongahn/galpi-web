@@ -1,11 +1,12 @@
-import { useState, useCallback } from 'react';
-import { faApple, faGooglePlay } from '@fortawesome/free-brands-svg-icons';
-import styled from '@emotion/styled';
-
-import useInterval from '../hooks/useInterval';
-import Logo from '../components/Logo';
-import Icon from '../atoms/Icon';
 import { Heading, Button, Link, VStack } from '@chakra-ui/react';
+import styled from '@emotion/styled';
+import { faApple, faGooglePlay } from '@fortawesome/free-brands-svg-icons';
+import { useState, useCallback } from 'react';
+
+import Icon from '../atoms/Icon';
+import Logo from '../components/Logo';
+import useInterval from '../hooks/useInterval';
+
 
 const screenshotNames = ['main', 'detail', 'search', 'write', 'login'];
 

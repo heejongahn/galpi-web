@@ -1,7 +1,7 @@
 import '@toast-ui/editor/dist/toastui-editor.css';
-import { ComponentProps } from 'react';
-import dynamic from 'next/dynamic';
 import styled from '@emotion/styled';
+import dynamic from 'next/dynamic';
+import { ComponentProps } from 'react';
 
 const Loader = styled.div`
   width: 100%;

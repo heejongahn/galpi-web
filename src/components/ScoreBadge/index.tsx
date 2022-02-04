@@ -1,5 +1,4 @@
-import { useMemo } from 'react';
-import { Review } from '../../model/Review';
+import { HStack, Badge, Text } from '@chakra-ui/react';
 import {
   faSkull,
   faPoo,
@@ -7,8 +6,11 @@ import {
   faHeart,
   faKissWinkHeart,
 } from '@fortawesome/free-solid-svg-icons';
-import { HStack, Badge, Text } from '@chakra-ui/react';
+import { useMemo } from 'react';
+
 import Icon from '../../atoms/Icon';
+import { Review } from '../../model/Review';
+
 
 interface Props {
   score: Review['stars'];

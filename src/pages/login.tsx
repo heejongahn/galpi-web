@@ -1,4 +1,3 @@
-import { FormEvent, useCallback, useContext, useState } from 'react';
 import {
   Input,
   Button,
@@ -7,10 +6,11 @@ import {
   FormLabel,
   Heading,
 } from '@chakra-ui/react';
+import { FormEvent, useCallback, useContext, useState } from 'react';
 
+import CommonHeadElements from '../components/CommonHeadElements';
 import Layout from '../components/Layout';
 import { FirebaseContext } from '../context/FirebaseContext';
-import CommonHeadElements from '../components/CommonHeadElements';
 
 export default function Index() {
   const [email, setEmail] = useState('');

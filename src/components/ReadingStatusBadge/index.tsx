@@ -1,12 +1,14 @@
-import { useMemo } from 'react';
-import { Review, ReadingStatus } from '../../model/Review';
+import { Badge, Text, HStack } from '@chakra-ui/react';
 import {
   faShoppingBasket,
   faSpinner,
   faCheck,
 } from '@fortawesome/free-solid-svg-icons';
-import { Badge, Text, HStack } from '@chakra-ui/react';
+import { useMemo } from 'react';
+
 import Icon from '../../atoms/Icon';
+import { Review, ReadingStatus } from '../../model/Review';
+
 
 interface Props {
   readingStatus: Review['readingStatus'];
@@ -26,7 +28,7 @@ export default function ReadingStatusBadge({
       case ReadingStatus.finishedReading:
         return { icon: faCheck, label: '읽음' } as const;
     }
-  }, []);
+  }, [readingStatus]);
 
   return (
     <Badge className={className}>
