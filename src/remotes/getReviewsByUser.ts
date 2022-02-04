@@ -4,6 +4,7 @@ import { Review } from '../model/Review';
 
 interface Params {
   userId: string;
+  listType: 'all' | 'unread' | 'read';
 }
 
 interface Response {
@@ -11,13 +12,13 @@ interface Response {
 }
 
 export function getReviewsByUser(axiosInstance: AxiosInstance) {
-  return async function ({ userId }: Params) {
+  return async function ({ userId, listType }: Params) {
     const { publicRuntimeConfig } = getConfig();
 
     const { data } = await axiosInstance.get<Response>(
       `${publicRuntimeConfig.API_ENDPOINT}/review/list`,
       {
-        params: { userId },
+        params: { userId, listType },
       }
     );
     return data;

@@ -69,7 +69,5 @@ const TextWrapper = styled.div`
 const Title = styled.div``;
 
 const Subtitle = styled.div`
-  margin-top: 4px;
-
-  font-size: 0.6rem;
+  font-size: 0.8rem;
 `;
