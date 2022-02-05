@@ -1,9 +1,12 @@
 import { UseQueryOptions, useQuery } from 'react-query';
+
 import { User } from '../model/User';
 import { getMe } from '../remotes';
 import { getAxiosInstance } from '../utils/axios';
 
-export default function useMe(options?: UseQueryOptions<{ user: User }, void>) {
+type UseMeOptions = UseQueryOptions<{ user: User }, void>;
+
+export function useMe(options?: UseMeOptions) {
   const axiosInstance = getAxiosInstance();
 
   return useQuery({
@@ -13,4 +16,9 @@ export default function useMe(options?: UseQueryOptions<{ user: User }, void>) {
     },
     ...options,
   });
+}
+
+export function useIsMe(userId: string | undefined, options?: UseMeOptions) {
+  const { data: me } = useMe(options);
+  return me?.user.id === userId;
 }

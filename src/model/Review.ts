@@ -1,5 +1,6 @@
 import { User } from './User';
 import { Book } from './Book';
+import { Revision } from './Revision';
 
 export enum ReadingStatus {
   hasntStarted = 'hasntStarted',
@@ -16,23 +17,15 @@ export interface ReviewPayload {
 export interface Review {
   id: string;
 
-  stars: number;
-
-  title: string;
-
-  body: string;
-
-  readingStatus: ReadingStatus;
-
   readingStartedAt?: string;
-
   readingFinishedAt?: string;
 
   createdAt: string;
-
   lastModifiedAt: string;
 
   isPublic: boolean;
+
   user: User;
   book: Book;
+  activeRevision?: Revision;
 }

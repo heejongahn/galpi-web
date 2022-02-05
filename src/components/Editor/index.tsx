@@ -30,18 +30,28 @@ const OLD_PREVIEW_CLASSNAME = 'toastui-editor-contents';
 const PROSE_MIRROR_CLASSNAME = 'ProseMirror';
 const NEW_PREVIEW_CLASSNAME = 'galpi-contents';
 
-const EditorWithStyleOverride = (props: ComponentProps<typeof ToastEditor>) => {
+type ToastEditorProps = ComponentProps<typeof ToastEditor>;
+export type EditorRef = Parameters<
+  Exclude<ToastEditorProps['onLoad'], undefined>
+>[0];
+
+type Props = ToastEditorProps & {
+  registerEditor?: (editor: EditorRef) => void;
+};
+
+const EditorWithStyleOverride = ({ registerEditor, ...props }: Props) => {
   return (
     <Wrapper>
       <ToastEditor
         {...props}
-        onLoad={(params) => {
+        onLoad={(editor) => {
           // NOTE:
           // 정식으로 스타일 오버라이드를 지원하는 API 가 나오면 수정
           // https://github.com/nhn/tui.editor/issues/1927
           // https://github.com/nhn/tui.editor/blob/f2dd13ee5f9c833af30046e2821c597d310249ea/apps/editor/src/markdown/mdPreview.ts#L98-L100
+          registerEditor?.(editor);
 
-          const previeContent = (params as any).preview
+          const previeContent = (editor as any).preview
             .previewContent as HTMLElement;
 
           if (previeContent.classList.contains(OLD_PREVIEW_CLASSNAME)) {
@@ -54,7 +64,7 @@ const EditorWithStyleOverride = (props: ComponentProps<typeof ToastEditor>) => {
 
           const proseMirrorContents = [
             ...(
-              (params as any).mdEditor.el as HTMLElement
+              (editor as any).mdEditor.el as HTMLElement
             ).getElementsByClassName(PROSE_MIRROR_CLASSNAME),
           ] as HTMLElement[];
           for (const proseMirrorContent of proseMirrorContents) {
@@ -62,7 +72,7 @@ const EditorWithStyleOverride = (props: ComponentProps<typeof ToastEditor>) => {
             proseMirrorContent.style.lineHeight = '1.8';
           }
 
-          props.onLoad?.(params);
+          props.onLoad?.(editor);
         }}
       />
     </Wrapper>

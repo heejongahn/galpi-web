@@ -17,14 +17,10 @@ import { useRouter } from 'next/router';
 import { ReactNode, useMemo, useState } from 'react';
 
 import Icon from '../../atoms/Icon';
-import useMe from '../../queries/useMe';
+import { useMe } from '../../queries/me';
 import Logo from '../Logo';
 import SearchBookModal from '../SearchBookModal';
 import UserAvatar from '../UserAvatar';
-
-
-
-
 
 interface Props {
   className?: string;
