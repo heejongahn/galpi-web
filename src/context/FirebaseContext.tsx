@@ -17,7 +17,7 @@ const { HOST, FIREBASE_API_KEY, FIREBASE_APP_ID, FIREBASE_PROJECT_ID } =
   getConfig().publicRuntimeConfig;
 
 interface FirebaseContextProps {
-  app: firebase.app.App;
+  app?: firebase.app.App | undefined;
   sendLoginEmail: (email: string) => void;
   loginWithEmailPassword: (email: string, password: string) => void;
   loginWithEmailOnly: (email: string) => void;

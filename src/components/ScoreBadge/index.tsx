@@ -9,11 +9,10 @@ import {
 import { useMemo } from 'react';
 
 import Icon from '../../atoms/Icon';
-import { Review } from '../../model/Review';
-
+import { Revision } from '../../model/Revision';
 
 interface Props {
-  score: Review['stars'];
+  score: Revision['stars'];
   className?: string;
 }
 

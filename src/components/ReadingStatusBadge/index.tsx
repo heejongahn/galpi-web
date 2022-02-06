@@ -7,11 +7,11 @@ import {
 import { useMemo } from 'react';
 
 import Icon from '../../atoms/Icon';
-import { Review, ReadingStatus } from '../../model/Review';
-
+import { ReadingStatus } from '../../model/Review';
+import { Revision } from '../../model/Revision';
 
 interface Props {
-  readingStatus: Review['readingStatus'];
+  readingStatus: Revision['readingStatus'];
   className?: string;
 }
 
@@ -26,6 +26,7 @@ export default function ReadingStatusBadge({
       case ReadingStatus.reading:
         return { icon: faSpinner, label: '읽는 중' } as const;
       case ReadingStatus.finishedReading:
+      default:
         return { icon: faCheck, label: '읽음' } as const;
     }
   }, [readingStatus]);
