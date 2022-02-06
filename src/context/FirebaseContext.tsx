@@ -17,7 +17,7 @@ const { HOST, FIREBASE_API_KEY, FIREBASE_APP_ID, FIREBASE_PROJECT_ID } =
   getConfig().publicRuntimeConfig;
 
 interface FirebaseContextProps {
-  app?: firebase.app.App;
+  app: firebase.app.App;
   sendLoginEmail: (email: string) => void;
   loginWithEmailPassword: (email: string, password: string) => void;
   loginWithEmailOnly: (email: string) => void;
@@ -109,7 +109,6 @@ export function FirebaseContextProvider({ children }: { children: ReactNode }) {
     const email = localStorage.getItem(LOCAL_STORAGE_KEY_LOGIN_EMAIL);
 
     if (app == null) {
-      debugger;
       return;
     }
 

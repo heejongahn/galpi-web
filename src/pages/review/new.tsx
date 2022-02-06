@@ -49,8 +49,6 @@ export default function WriteReview() {
     return null;
   }
 
-  console.log(state);
-
   return (
     <>
       <CommonHeadElements title={pageTitle} />

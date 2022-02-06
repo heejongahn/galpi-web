@@ -32,7 +32,6 @@ export function parseBookPayloadFromKakao(
   payload: BookPayloadFromKakao
 ): BookPayload {
   const { isbn, title, authors, contents, publisher, url, thumbnail } = payload;
-  console.log(payload);
   return {
     isbn,
     title,
