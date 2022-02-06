@@ -7,23 +7,19 @@ import {
   FormLabel,
   RadioGroup,
   Radio,
+  useToast,
 } from '@chakra-ui/react';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import { FormEventHandler, useRef, useState } from 'react';
 
 import { ReadingStatus } from '../../model/Review';
-import { Revision } from '../../model/Revision';
+import { RevisionPayload } from '../../model/Revision';
 import ToastEditor, { EditorRef } from '../Editor';
 
-type EditableRevisionParts = Pick<
-  Revision,
-  'title' | 'body' | 'stars' | 'readingStatus'
->;
-
 interface Props {
-  currentRevision?: EditableRevisionParts;
+  currentRevision?: RevisionPayload;
   // onTemporarySave: (editedRevision: EditableRevisionParts) => Promise<void>;
-  onSave: (editedRevision: EditableRevisionParts) => Promise<void>;
+  onSave: (editedRevision: RevisionPayload) => Promise<void>;
 }
 
 enum Submitter {
@@ -47,6 +43,7 @@ export default function RevisionEditor({
   // onTemporarySave,
   onSave,
 }: Props) {
+  const toast = useToast();
   const editorRef = useRef<EditorRef | null>(null);
   const [pendingSubmitter, setPendingSubmitter] = useState<Submitter | null>(
     null
@@ -66,6 +63,22 @@ export default function RevisionEditor({
       stars,
       readingStatus,
     };
+
+    if (title === '') {
+      toast({
+        title: '제목을 입력해주세요.',
+        status: 'error',
+      });
+      return;
+    }
+
+    if (body === '') {
+      toast({
+        title: '내용을 입력해주세요.',
+        status: 'error',
+      });
+      return;
+    }
 
     try {
       // if (

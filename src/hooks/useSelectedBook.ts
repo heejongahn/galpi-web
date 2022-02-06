@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+
 import { BookPayload } from '../model/Book';
 
 const SESSION_KEY_BOOK_STATE = 'galpi.review.selected_book';
 
 interface State {
-  book: BookPayload;
-  bookId: string;
+  bookPayload: BookPayload;
 }
 
 const sessionStorage =

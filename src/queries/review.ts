@@ -1,9 +1,9 @@
 import { useMutation, UseMutationOptions } from 'react-query';
 
 import { BookPayload } from '../model/Book';
-import { Review } from '../model/Review';
+import { Review, ReviewPayload } from '../model/Review';
 import { RevisionPayload } from '../model/Revision';
-import { createRevision, createUnreadReview } from '../remotes';
+import { createReview, createRevision, createUnreadReview } from '../remotes';
 import { getAxiosInstance } from '../utils/axios';
 
 interface CreateReviewWithoutRevisionParams {
@@ -33,7 +33,33 @@ export function useCreateReviewWithoutRevision(
   );
 }
 
-interface CreatRevisionParams {
+interface CreateReviewParams {
+  bookId: string;
+  reviewPayload: ReviewPayload;
+  revisionPayload: RevisionPayload;
+}
+
+interface CreateReviewResponse {
+  review: Review;
+}
+
+export function useCreateReview(
+  options?: UseMutationOptions<
+    CreateReviewResponse,
+    unknown,
+    CreateReviewParams
+  >
+) {
+  const axiosInstance = getAxiosInstance();
+  return useMutation(async (params: CreateReviewParams) => {
+    const { review } = await createReview(axiosInstance)({
+      ...params,
+    });
+    return { review };
+  }, options);
+}
+
+interface CreateRevisionParams {
   reviewId: Review['id'];
   revisionPayload: RevisionPayload;
 }
@@ -46,11 +72,11 @@ export function useCreateRevision(
   options?: UseMutationOptions<
     CreateRevisionResponse,
     unknown,
-    CreatRevisionParams
+    CreateRevisionParams
   >
 ) {
   const axiosInstance = getAxiosInstance();
-  return useMutation(async (params: CreatRevisionParams) => {
+  return useMutation(async (params: CreateRevisionParams) => {
     const { review } = await createRevision(axiosInstance)({
       ...params,
     });

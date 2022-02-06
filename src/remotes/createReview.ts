@@ -19,7 +19,7 @@ export function createReview(axiosInstance: AxiosInstance) {
     const { publicRuntimeConfig } = getConfig();
 
     const { data } = await axiosInstance.post<Response>(
-      `${publicRuntimeConfig.API_ENDPOINT}/review/create`,
+      `${publicRuntimeConfig.API_ENDPOINT}/review/create-review`,
       params
     );
     return data;

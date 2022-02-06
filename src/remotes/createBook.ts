@@ -1,5 +1,6 @@
 import type { AxiosInstance } from 'axios';
 import getConfig from 'next/config';
+
 import { Book, BookPayload } from '../model/Book';
 
 interface Params {

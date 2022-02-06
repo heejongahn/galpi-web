@@ -1,45 +1,64 @@
-import { Heading, Button, HStack, VStack } from '@chakra-ui/react';
-import { NextPage } from 'next';
+import { Heading, useToast, VStack } from '@chakra-ui/react';
 import '@toast-ui/editor/dist/toastui-editor.css';
+import { useRouter } from 'next/router';
 
 import CommonHeadElements from '../../components/CommonHeadElements';
 // import { getAxiosInstance } from '../../utils/axios';
-import ToastEditor from '../../components/Editor';
 import Layout from '../../components/Layout';
+import RevisionEditor from '../../components/RevisionEditor';
+import useSelectedBook from '../../hooks/useSelectedBook';
+import { RevisionPayload } from '../../model/Revision';
+import { useCreateBook } from '../../queries/book';
+import { useCreateReview } from '../../queries/review';
 
-const WriteReview: NextPage = () => {
-  // const axios = getAxiosInstance();
+export default function WriteReview() {
+  const toast = useToast();
+
+  const { replace } = useRouter();
+  const { mutateAsync: createReview } = useCreateReview({
+    onSuccess: (response) => {
+      replace(`/review/${response.review.id}`);
+    },
+  });
+
+  const { mutateAsync: createBook } = useCreateBook({});
+
+  const { state } = useSelectedBook();
+
+  const pageTitle = '독후감 작성';
+
+  const handleSave = async (params: RevisionPayload) => {
+    if (state == null) {
+      toast({
+        title: '올바르지 않은 접근입니다.',
+        status: 'error',
+      });
+      return;
+    }
+
+    const { book } = await createBook({ bookPayload: state.bookPayload });
+    await createReview({
+      bookId: book.id,
+      reviewPayload: { isPublic: false },
+      revisionPayload: params,
+    });
+  };
+
+  if (state == null) {
+    return null;
+  }
+
+  console.log(state);
+
   return (
     <>
-      <CommonHeadElements title="새 독후감 작성" />
+      <CommonHeadElements title={pageTitle} />
       <Layout>
         <VStack spacing="24px" align="stretch">
-          <Heading as="h1">새 글 작성</Heading>
-          <ToastEditor
-            language="ko-KR"
-            minHeight="600px"
-            height="600px"
-            hideModeSwitch
-            toolbarItems={[
-              ['heading', 'bold', 'italic', 'strike'],
-              ['hr', 'quote'],
-              ['ul', 'ol'],
-              [
-                // 'table', 'image',
-                'link',
-              ],
-              ['code', 'codeblock'],
-              ['scrollSync'],
-            ]}
-          />
-          <HStack align="center" justify="flex-end" spacing="24px">
-            <Button variant="ghost">임시 저장</Button>
-            <Button>작성하기</Button>
-          </HStack>
+          <Heading as="h1">{pageTitle}</Heading>
+          <RevisionEditor onSave={handleSave} />
         </VStack>
       </Layout>
     </>
   );
-};
-
-export default WriteReview;
+}

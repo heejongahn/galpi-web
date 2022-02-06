@@ -1,6 +1,6 @@
-import { User } from './User';
 import { Book } from './Book';
 import { Revision } from './Revision';
+import { User } from './User';
 
 export enum ReadingStatus {
   hasntStarted = 'hasntStarted',

@@ -20,8 +20,9 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useDebounce } from 'use-debounce';
 
+import useSelectedBook from '../../hooks/useSelectedBook';
+import { useBooks } from '../../queries/book';
 import { useCreateReviewWithoutRevision } from '../../queries/review';
-import useBooks from '../../queries/useBooks';
 import SearchBookListItem from './SearchBookListItem';
 
 type Props = Omit<ModalProps, 'children'>;
@@ -33,16 +34,38 @@ export default function SearchBookModal({ onClose, ...props }: Props) {
   const books = data?.pages.flat() ?? [];
 
   const [selectedBookIsbn, setSelectedBookIsbn] = useState<string | null>(null);
-  const selectedBook = books.find((book) => book.isbn === selectedBookIsbn);
+  const selectedBookPayload = books.find(
+    (book) => book.isbn === selectedBookIsbn
+  );
 
   const { push } = useRouter();
+
+  const { updateState } = useSelectedBook();
 
   const { mutate: createUnreadReview, isLoading: isCreatingUnreadReview } =
     useCreateReviewWithoutRevision({
       onSuccess: ({ review }) => {
+        updateState({ bookPayload: review.book });
         push(`/review/${review.id}`);
       },
     });
+
+  const handleCreateReviewWithoutRevision = () => {
+    if (selectedBookPayload == null) {
+      return;
+    }
+
+    createUnreadReview({ bookPayload: selectedBookPayload });
+  };
+
+  const handleMoveToWriteReview = () => {
+    if (selectedBookPayload == null) {
+      return;
+    }
+
+    updateState({ bookPayload: selectedBookPayload });
+    push(`/review/new`);
+  };
 
   const child = isLoading ? (
     <Center width="100%" height="300px">
@@ -114,8 +137,8 @@ export default function SearchBookModal({ onClose, ...props }: Props) {
           bottom="0"
           width="100%"
           transition="transform 0.15s ease-in-out, opacity 0.15s ease-in-out"
-          transform={selectedBook != null ? 'none' : 'translateY(100%)'}
-          opacity={selectedBook != null ? 1 : 0}
+          transform={selectedBookPayload != null ? 'none' : 'translateY(100%)'}
+          opacity={selectedBookPayload != null ? 1 : 0}
           backgroundColor="#fefefe"
           borderTopColor="gray.200"
           borderTopWidth="1px"
@@ -126,14 +149,17 @@ export default function SearchBookModal({ onClose, ...props }: Props) {
               variant="outline"
               backgroundColor="white"
               isLoading={isCreatingUnreadReview}
-              onClick={() => {
-                if (selectedBook == null) {
-                  return;
-                }
-                createUnreadReview({ bookPayload: selectedBook });
-              }}
+              onClick={handleCreateReviewWithoutRevision}
             >
-              독후감 없이 책만 먼저 추가하기
+              책만 추가하기
+            </Button>
+            <Button
+              variant="outline"
+              backgroundColor="white"
+              isLoading={isCreatingUnreadReview}
+              onClick={handleMoveToWriteReview}
+            >
+              바로 독후감 쓰기
             </Button>
           </HStack>
         </ModalFooter>

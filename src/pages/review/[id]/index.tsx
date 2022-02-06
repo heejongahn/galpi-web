@@ -3,8 +3,6 @@ import {
   VStack,
   Text,
   HStack,
-  Button,
-  Link,
   IconButton,
   Tooltip,
   Flex,
@@ -13,7 +11,6 @@ import styled from '@emotion/styled';
 import {
   faEdit,
   faExternalLinkAlt,
-  faList,
   faSearchPlus,
 } from '@fortawesome/free-solid-svg-icons';
 import { parseISO, format } from 'date-fns';
@@ -90,7 +87,7 @@ const ReviewDetail: NextPage<Props> = ({ review }) => {
                   size={12}
                 />
               </BookTitleWrapper>
-              <HStack align="center" justify="space-between">
+              <HStack align="center" spacing="36px">
                 <UserAvatar
                   user={review.user}
                   title={review.user.displayName ?? review.user.email}
