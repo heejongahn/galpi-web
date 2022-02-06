@@ -2,13 +2,7 @@ import { addDays } from 'date-fns';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import getConfig from 'next/config';
-import {
-  createContext,
-  ReactNode,
-  useState,
-  useEffect,
-  useCallback,
-} from 'react';
+import { createContext, ReactNode, useState, useCallback } from 'react';
 import Cookies from 'universal-cookie';
 
 import {
@@ -26,25 +20,23 @@ interface FirebaseContextProps {
   app?: firebase.app.App;
   sendLoginEmail: (email: string) => void;
   loginWithEmailPassword: (email: string, password: string) => void;
+  loginWithEmailOnly: (email: string) => void;
   logout: VoidFunction;
 }
 
+const noop = () => {};
+
 export const FirebaseContext = createContext<FirebaseContextProps>({
-  sendLoginEmail: () => {},
-  loginWithEmailPassword: () => {},
-  logout: () => {},
+  sendLoginEmail: noop,
+  loginWithEmailPassword: noop,
+  loginWithEmailOnly: noop,
+  logout: noop,
 });
 
+const LOCAL_STORAGE_KEY_LOGIN_EMAIL = 'galpi.auth.login_email';
+
 export function FirebaseContextProvider({ children }: { children: ReactNode }) {
-  const [app, setApp] = useState<firebase.app.App | undefined>(undefined);
-  const axiosInstance = getAxiosInstance();
-  const { refetch } = useMe({ enabled: false });
-
-  useEffect(() => {
-    if (app != null) {
-      return;
-    }
-
+  const [app] = useState<firebase.app.App | undefined>(() => {
     if (!firebase.apps.length) {
       const firebaseConfig = {
         apiKey: FIREBASE_API_KEY,
@@ -54,17 +46,22 @@ export function FirebaseContextProvider({ children }: { children: ReactNode }) {
 
       const initializedApp = firebase.initializeApp(firebaseConfig);
 
-      setApp(initializedApp);
+      return initializedApp;
     }
-  }, [app]);
+
+    return firebase.apps[0];
+  });
+  const axiosInstance = getAxiosInstance();
+  const { refetch } = useMe({ enabled: false });
 
   const sendLoginEmail = useCallback(
-    (email: string) => {
+    async (email: string) => {
       if (app == null) {
         return;
       }
 
-      app.auth().sendSignInLinkToEmail(email, {
+      localStorage.setItem(LOCAL_STORAGE_KEY_LOGIN_EMAIL, email);
+      await app.auth().sendSignInLinkToEmail(email, {
         url: `${HOST}/login-redirect`,
         handleCodeInApp: true,
       });
@@ -72,16 +69,8 @@ export function FirebaseContextProvider({ children }: { children: ReactNode }) {
     [app]
   );
 
-  const loginWithEmailPassword = useCallback(
-    async (email: string, password: string) => {
-      if (app == null) {
-        return;
-      }
-
-      const { user } = await app
-        .auth()
-        .signInWithEmailAndPassword(email, password);
-
+  const loginUser = useCallback(
+    async (user: firebase.User | null) => {
       const token = await user?.getIdToken();
 
       if (token) {
@@ -98,8 +87,46 @@ export function FirebaseContextProvider({ children }: { children: ReactNode }) {
         refetch();
       }
     },
-    [app]
+    [axiosInstance, refetch]
   );
+
+  const loginWithEmailPassword = useCallback(
+    async (email: string, password: string) => {
+      if (app == null) {
+        return;
+      }
+
+      const { user } = await app
+        .auth()
+        .signInWithEmailAndPassword(email, password);
+
+      await loginUser(user);
+    },
+    [app, loginUser]
+  );
+
+  const loginWithEmailOnly = useCallback(async () => {
+    const email = localStorage.getItem(LOCAL_STORAGE_KEY_LOGIN_EMAIL);
+
+    if (app == null) {
+      debugger;
+      return;
+    }
+
+    const auth = app.auth();
+
+    if (!auth.isSignInWithEmailLink(window.location.href) || email == null) {
+      alert('올바르지 않은 접근입니다.');
+      return;
+    }
+
+    const { user } = await auth.signInWithEmailLink(
+      email,
+      window.location.href
+    );
+
+    await loginUser(user);
+  }, [app, loginUser]);
 
   const logout = useCallback(async () => {
     if (app == null) {
@@ -116,7 +143,13 @@ export function FirebaseContextProvider({ children }: { children: ReactNode }) {
 
   return (
     <FirebaseContext.Provider
-      value={{ app, sendLoginEmail, loginWithEmailPassword, logout }}
+      value={{
+        app,
+        sendLoginEmail,
+        loginWithEmailPassword,
+        loginWithEmailOnly,
+        logout,
+      }}
     >
       {children}
     </FirebaseContext.Provider>

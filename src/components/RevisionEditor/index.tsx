@@ -66,6 +66,7 @@ export default function RevisionEditor({
 
     if (title === '') {
       toast({
+        position: 'top',
         title: '제목을 입력해주세요.',
         status: 'error',
       });
@@ -74,6 +75,7 @@ export default function RevisionEditor({
 
     if (body === '') {
       toast({
+        position: 'top',
         title: '내용을 입력해주세요.',
         status: 'error',
       });

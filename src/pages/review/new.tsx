@@ -30,6 +30,7 @@ export default function WriteReview() {
   const handleSave = async (params: RevisionPayload) => {
     if (state == null) {
       toast({
+        position: 'top',
         title: '올바르지 않은 접근입니다.',
         status: 'error',
       });

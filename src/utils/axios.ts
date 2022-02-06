@@ -1,7 +1,9 @@
+import type { IncomingMessage } from 'http';
+
 import axios from 'axios';
 import getConfig from 'next/config';
-import type { IncomingMessage } from 'http';
 import Cookies from 'universal-cookie';
+
 import { COOKIE_KEY_ACCESS_TOKEN } from '../constants';
 
 export function getAxiosInstance(req?: IncomingMessage) {
@@ -11,16 +13,21 @@ export function getAxiosInstance(req?: IncomingMessage) {
 
   const cookies = req != null ? new Cookies(req.headers.cookie) : new Cookies();
 
-  const accessTokenFromCookie = cookies.get(COOKIE_KEY_ACCESS_TOKEN) ?? '';
+  const axiosInstance = axios.create(defaultConfig);
+  axiosInstance.interceptors.request.use((config) => {
+    const accessTokenFromCookie = cookies.get(COOKIE_KEY_ACCESS_TOKEN) ?? '';
+    if (accessTokenFromCookie === '') {
+      return config;
+    }
 
-  return axios.create(
-    accessTokenFromCookie === ''
-      ? defaultConfig
-      : {
-          ...defaultConfig,
-          headers: {
-            Authorization: `Bearer ${accessTokenFromCookie}`,
-          },
-        }
-  );
+    return {
+      ...config,
+      headers: {
+        ...config.headers,
+        Authorization: `Bearer ${accessTokenFromCookie}`,
+      },
+    };
+  });
+
+  return axiosInstance;
 }
