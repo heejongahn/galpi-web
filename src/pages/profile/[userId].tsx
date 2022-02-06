@@ -1,24 +1,21 @@
 import { NextPage, GetServerSideProps } from 'next';
-import styled from '@emotion/styled';
 
-import Layout from '../../components/Layout';
-import { getProfile, getReviewsByUser } from '../../remotes';
-import { Review } from '../../model/Review';
 import CommonHeadElements from '../../components/CommonHeadElements';
+import Layout from '../../components/Layout';
+import ReviewLists from '../../components/ReviewLists';
+import UserAvatar from '../../components/UserAvatar';
+import { Review } from '../../model/Review';
 import { User } from '../../model/User';
-import Avatar from '../../components/Avatar';
-import { parseISO, format } from 'date-fns';
-import ReadingStatusBadge from '../../components/ReadingStatusBadge';
-import ScoreBadge from '../../components/ScoreBadge';
-import Link from 'next/link';
+import { getProfile, getReviewsByUser } from '../../remotes';
 import { getAxiosInstance } from '../../utils/axios';
 
 interface Props {
   user?: User;
-  reviews: Review[];
+  readReviews: Review[];
+  unreadReviews: Review[];
 }
 
-const Profile: NextPage<Props> = ({ user, reviews }) => {
+const Profile: NextPage<Props> = ({ user, readReviews, unreadReviews }) => {
   if (user == null) {
     return (
       <>
@@ -41,65 +38,25 @@ const Profile: NextPage<Props> = ({ user, reviews }) => {
     <>
       <CommonHeadElements title={title} description={description} />
       <Layout>
-        <Avatar
+        <UserAvatar
           user={user}
           title={user.displayName ?? user.email}
-          subtitle="님의 공개 독후감"
+          subtitle="님의 독후감"
         />
-        <Reviews>
-          {reviews.map((review) => {
-            const {
-              book,
-              title,
-              createdAt,
-              lastModifiedAt,
-              readingStatus,
-              stars,
-            } = review;
-
-            const [parsedCreatedAt, parsedLastModifiedAt] =
-              review == null
-                ? ['', '']
-                : [createdAt, lastModifiedAt].map((dateString) =>
-                    format(parseISO(dateString), 'yyyy. M. d')
-                  );
-
-            return (
-              <Link passHref href={`/review/${review.id}`}>
-                <ReviewWrapper>
-                  <Title>{title}</Title>
-                  <BookTitleWrapper>
-                    <BookTitle>{book.title}</BookTitle>
-                    <BookAuthor>{book.author}</BookAuthor>
-                  </BookTitleWrapper>
-                  <DateInfo>
-                    {parsedCreatedAt} 씀 · {parsedLastModifiedAt} 고침
-                  </DateInfo>
-                  <Badges>
-                    <ReadingStatusBadge
-                      readingStatus={readingStatus}
-                    ></ReadingStatusBadge>
-                    <StyledScoreBadge score={stars}></StyledScoreBadge>
-                  </Badges>
-                </ReviewWrapper>
-              </Link>
-            );
-          })}
-        </Reviews>
+        <ReviewLists readReviews={readReviews} unreadReviews={unreadReviews} />
       </Layout>
     </>
   );
 };
 
-export const getServerSideProps: GetServerSideProps<{
-  user?: User;
-  reviews: Review[];
-}> = async (context) => {
+export const getServerSideProps: GetServerSideProps<Props> = async (
+  context
+) => {
   const { query, req } = context;
   const { userId } = query;
 
   if (userId == null) {
-    return { props: { reviews: [] } };
+    return { props: { readReviews: [], unreadReviews: [] } };
   }
 
   const parsedUserId = Array.isArray(userId) ? userId[0] : userId;
@@ -107,97 +64,29 @@ export const getServerSideProps: GetServerSideProps<{
   const axiosInstance = getAxiosInstance(req);
 
   try {
-    const [{ user }, { reviews }] = await Promise.all([
-      getProfile(axiosInstance)({ userId: parsedUserId }),
-      getReviewsByUser(axiosInstance)({ userId: parsedUserId }),
-    ]);
+    const [{ user }, { reviews: readReviews }, { reviews: unreadReviews }] =
+      await Promise.all([
+        getProfile(axiosInstance)({ userId: parsedUserId }),
+        getReviewsByUser(axiosInstance)({
+          userId: parsedUserId,
+          listType: 'read',
+        }),
+        getReviewsByUser(axiosInstance)({
+          userId: parsedUserId,
+          listType: 'unread',
+        }),
+      ]);
+
     return {
       props: {
         user,
-        reviews,
+        readReviews,
+        unreadReviews,
       },
     };
   } catch (e) {
-    return { props: { reviews: [] } };
+    return { props: { readReviews: [], unreadReviews: [] } };
   }
 };
 
 export default Profile;
-
-const Reviews = styled.ul`
-  margin: 0;
-  padding: 0;
-`;
-
-const ReviewWrapper = styled.a`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-
-  border-radius: 8px;
-  padding: 24px;
-  margin: 24px -24px;
-  transition: 0.2s background-color ease-in-out;
-  cursor: pointer;
-
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.04);
-  }
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-`;
-
-const Title = styled.strong`
-  font-size: 2em;
-  margin-bottom: 8px;
-`;
-
-const BookTitleWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-
-  margin-bottom: 8px;
-
-  color: #292929;
-`;
-
-const BookTitle = styled.h2`
-  ::before {
-    content: '『';
-    font-family: sans-serif;
-  }
-
-  ::after {
-    content: '』';
-    font-family: sans-serif;
-  }
-`;
-
-const BookAuthor = styled.span`
-  margin-left: 8px;
-`;
-
-const Badges = styled.div`
-  display: flex;
-  align-items: center;
-
-  margin-top: 12px;
-`;
-
-const StyledScoreBadge = styled(ScoreBadge)`
-  margin-left: 8px;
-`;
-
-const DateInfo = styled.time`
-  display: flex;
-  align-items: center;
-
-  margin-top: 4px;
-
-  font-size: 0.75rem;
-  line-height: 1;
-`;

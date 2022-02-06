@@ -1,6 +1,4 @@
-import { useMemo } from 'react';
-import { Review } from '../../model/Review';
-import { Badge } from '../../atoms';
+import { HStack, Badge, Text } from '@chakra-ui/react';
 import {
   faSkull,
   faPoo,
@@ -8,6 +6,11 @@ import {
   faHeart,
   faKissWinkHeart,
 } from '@fortawesome/free-solid-svg-icons';
+import { useMemo } from 'react';
+
+import Icon from '../../atoms/Icon';
+import { Review } from '../../model/Review';
+
 
 interface Props {
   score: Review['stars'];
@@ -33,8 +36,11 @@ export default function ScoreBadge({ score, className }: Props) {
   }, [score]);
 
   return (
-    <Badge className={className} icon={icon}>
-      {label}
+    <Badge className={className}>
+      <HStack align="center" spacing="4px">
+        <Text>{label}</Text>
+        <Icon icon={icon} size={12} />
+      </HStack>
     </Badge>
   );
 }

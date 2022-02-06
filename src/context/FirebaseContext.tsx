@@ -1,5 +1,7 @@
+import { addDays } from 'date-fns';
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import getConfig from 'next/config';
 import {
   createContext,
   ReactNode,
@@ -7,17 +9,15 @@ import {
   useEffect,
   useCallback,
 } from 'react';
-import getConfig from 'next/config';
 import Cookies from 'universal-cookie';
-import { addDays } from 'date-fns';
 
-import { login } from '../remotes';
-import { getAxiosInstance } from '../utils/axios';
 import {
   COOKIE_KEY_ACCESS_TOKEN,
   COOKIE_KEY_REFRESH_TOKEN,
 } from '../constants';
-import useMe from '../queries/useMe';
+import { useMe } from '../queries/me';
+import { login } from '../remotes';
+import { getAxiosInstance } from '../utils/axios';
 
 const { HOST, FIREBASE_API_KEY, FIREBASE_APP_ID, FIREBASE_PROJECT_ID } =
   getConfig().publicRuntimeConfig;

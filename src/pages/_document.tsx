@@ -1,4 +1,5 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document';
+
 import { mediaStyles } from '../components/Media';
 
 export default class MyDocument extends Document {

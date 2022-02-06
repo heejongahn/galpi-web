@@ -1,11 +1,26 @@
-import { ReactNode, useMemo } from 'react';
+import {
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuDivider,
+  IconButton,
+} from '@chakra-ui/react';
 import styled from '@emotion/styled';
-
-import Logo from '../Logo';
-import Link from 'next/link';
+import {
+  faPlus,
+  faSignOutAlt,
+  faUser,
+} from '@fortawesome/free-solid-svg-icons';
+import NextLink from 'next/link';
 import { useRouter } from 'next/router';
-import useMe from '../../queries/useMe';
-import Avatar from '../Avatar';
+import { ReactNode, useMemo, useState } from 'react';
+
+import Icon from '../../atoms/Icon';
+import { useMe } from '../../queries/me';
+import Logo from '../Logo';
+import SearchBookModal from '../SearchBookModal';
+import UserAvatar from '../UserAvatar';
 
 interface Props {
   className?: string;
@@ -19,9 +34,44 @@ export default function Layout({ className, children }: Props) {
   const { data } = useMe();
   const user = data?.user;
 
+  const [isSelectBookModalOpen, setIsSelectBookModalOpen] = useState(false);
+
   const rightAdornment = useMemo(() => {
     if (user != null) {
-      return <Avatar user={user} />;
+      return (
+        <Menu placement="bottom-end">
+          <MenuButton
+            as={IconButton}
+            variant="unstyled"
+            icon={<UserAvatar user={user} />}
+          />
+          <MenuList>
+            <NextLink href={`/profile/${user.id}`} passHref>
+              <MenuItem
+                as="a"
+                icon={<Icon size={16} icon={faUser} />}
+                position="relative"
+              >
+                내 프로필
+              </MenuItem>
+            </NextLink>
+            <MenuItem
+              as="a"
+              icon={<Icon size={16} icon={faPlus} />}
+              onClick={() => setIsSelectBookModalOpen(true)}
+            >
+              갈피 남기기
+            </MenuItem>
+            <MenuDivider />
+            <MenuItem
+              color="red.500"
+              icon={<Icon size={16} icon={faSignOutAlt} />}
+            >
+              로그아웃
+            </MenuItem>
+          </MenuList>
+        </Menu>
+      );
     }
 
     const loginPathname = '/login';
@@ -31,21 +81,27 @@ export default function Layout({ className, children }: Props) {
     }
 
     return (
-      <Link href="/login">
+      <NextLink href="/login">
         <LoginLink>로그인</LoginLink>
-      </Link>
+      </NextLink>
     );
   }, [user, pathname]);
 
   return (
     <Article className={className}>
       <Main>{children}</Main>
-      <Menu>
-        <MenuWrapper>
+      <Right>
+        <RightWrapper>
           <Logo height={32} />
           {rightAdornment}
-        </MenuWrapper>
-      </Menu>
+        </RightWrapper>
+      </Right>
+      <SearchBookModal
+        isOpen={isSelectBookModalOpen}
+        onClose={() => {
+          setIsSelectBookModalOpen(false);
+        }}
+      />
     </Article>
   );
 }
@@ -59,7 +115,7 @@ const Article = styled.article`
   background-color: white;
 `;
 
-const Menu = styled.menu`
+const Right = styled.menu`
   position: fixed;
   top: 0;
   left: 0;
@@ -76,7 +132,7 @@ const Menu = styled.menu`
   background-color: rgba(255, 255, 255, 0.8);
 `;
 
-const MenuWrapper = styled.div`
+const RightWrapper = styled.div`
   width: 100%;
   max-width: 1200px;
   height: 100%;
