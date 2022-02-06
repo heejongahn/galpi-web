@@ -14,9 +14,10 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
-import { ReactNode, useMemo, useState } from 'react';
+import { ReactNode, useContext, useMemo, useState } from 'react';
 
 import Icon from '../../atoms/Icon';
+import { FirebaseContext } from '../../context/FirebaseContext';
 import { useMe } from '../../queries/me';
 import Logo from '../Logo';
 import SearchBookModal from '../SearchBookModal';
@@ -31,12 +32,18 @@ const menuHeight = 56;
 
 export default function Layout({ className, children }: Props) {
   const { pathname } = useRouter();
-  const { data } = useMe();
+  const { data, isLoading } = useMe();
   const user = data?.user;
 
   const [isSelectBookModalOpen, setIsSelectBookModalOpen] = useState(false);
 
+  const { logout } = useContext(FirebaseContext);
+
   const rightAdornment = useMemo(() => {
+    if (isLoading) {
+      return null;
+    }
+
     if (user != null) {
       return (
         <Menu placement="bottom-end">
@@ -66,6 +73,7 @@ export default function Layout({ className, children }: Props) {
             <MenuItem
               color="red.500"
               icon={<Icon size={16} icon={faSignOutAlt} />}
+              onClick={logout}
             >
               로그아웃
             </MenuItem>
@@ -85,7 +93,7 @@ export default function Layout({ className, children }: Props) {
         <LoginLink>로그인</LoginLink>
       </NextLink>
     );
-  }, [user, pathname]);
+  }, [isLoading, user, pathname, logout]);
 
   return (
     <Article className={className}>

@@ -171,6 +171,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async (
 
   try {
     const { review } = await getReview(axiosInstance)({ id: parsedId });
+    console.log({ review, parsedId });
     return { props: { review } };
   } catch (e) {
     console.log(e);

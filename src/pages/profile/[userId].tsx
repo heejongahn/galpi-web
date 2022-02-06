@@ -6,6 +6,7 @@ import ReviewLists from '../../components/ReviewLists';
 import UserAvatar from '../../components/UserAvatar';
 import { Review } from '../../model/Review';
 import { User } from '../../model/User';
+import { useIsMe } from '../../queries/me';
 import { getProfile, getReviewsByUser } from '../../remotes';
 import { getAxiosInstance } from '../../utils/axios';
 
@@ -16,6 +17,8 @@ interface Props {
 }
 
 const Profile: NextPage<Props> = ({ user, readReviews, unreadReviews }) => {
+  const isMe = useIsMe(user?.id);
+
   if (user == null) {
     return (
       <>
@@ -43,7 +46,11 @@ const Profile: NextPage<Props> = ({ user, readReviews, unreadReviews }) => {
           title={user.displayName ?? user.email}
           subtitle="님의 독후감"
         />
-        <ReviewLists readReviews={readReviews} unreadReviews={unreadReviews} />
+        <ReviewLists
+          isMe={isMe}
+          readReviews={readReviews}
+          unreadReviews={unreadReviews}
+        />
       </Layout>
     </>
   );
