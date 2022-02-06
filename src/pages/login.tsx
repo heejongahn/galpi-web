@@ -14,17 +14,23 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import styled from '@emotion/styled';
+import { useRouter } from 'next/router';
 import { FormEvent, useCallback, useContext, useState } from 'react';
 
 import CommonHeadElements from '../components/CommonHeadElements';
 import Layout from '../components/Layout';
 import { FirebaseContext } from '../context/FirebaseContext';
+import { useMe } from '../queries/me';
 
 export default function Index() {
   const toast = useToast();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const { replace } = useRouter();
+
+  const { refetch } = useMe({ enabled: false });
 
   const { loginWithEmailPassword, sendLoginEmail } =
     useContext(FirebaseContext);
@@ -39,6 +45,8 @@ export default function Index() {
           status: 'success',
           title: `성공적으로 로그인되었습니다.`,
         });
+        replace('/');
+        refetch();
       } catch {
         toast({
           position: 'top',
@@ -48,7 +56,7 @@ export default function Index() {
         });
       }
     },
-    [loginWithEmailPassword, email, password, toast]
+    [loginWithEmailPassword, email, password, toast, replace, refetch]
   );
 
   const handleSubmitEmailOnly = useCallback(

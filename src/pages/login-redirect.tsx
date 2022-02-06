@@ -10,7 +10,7 @@ export default function Index() {
   const { query, replace } = useRouter();
   const didLogin = useRef(false);
 
-  const { refetch } = useMe();
+  const { refetch } = useMe({ enabled: false });
 
   const emailFromQuery = query['email'];
   const email = Array.isArray(emailFromQuery)
