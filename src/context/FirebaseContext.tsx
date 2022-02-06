@@ -26,11 +26,13 @@ interface FirebaseContextProps {
   app?: firebase.app.App;
   sendLoginEmail: (email: string) => void;
   loginWithEmailPassword: (email: string, password: string) => void;
+  logout: VoidFunction;
 }
 
 export const FirebaseContext = createContext<FirebaseContextProps>({
   sendLoginEmail: () => {},
   loginWithEmailPassword: () => {},
+  logout: () => {},
 });
 
 export function FirebaseContextProvider({ children }: { children: ReactNode }) {
@@ -99,9 +101,22 @@ export function FirebaseContextProvider({ children }: { children: ReactNode }) {
     [app]
   );
 
+  const logout = useCallback(async () => {
+    if (app == null) {
+      return;
+    }
+
+    await app.auth().signOut();
+    const cookies = new Cookies();
+    cookies.remove(COOKIE_KEY_ACCESS_TOKEN);
+    cookies.remove(COOKIE_KEY_REFRESH_TOKEN);
+
+    window.location.replace('/');
+  }, [app]);
+
   return (
     <FirebaseContext.Provider
-      value={{ app, sendLoginEmail, loginWithEmailPassword }}
+      value={{ app, sendLoginEmail, loginWithEmailPassword, logout }}
     >
       {children}
     </FirebaseContext.Provider>
