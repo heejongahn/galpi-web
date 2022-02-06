@@ -93,7 +93,7 @@ export default function Layout({ className, children }: Props) {
         <LoginLink>로그인</LoginLink>
       </NextLink>
     );
-  }, [user, pathname, logout]);
+  }, [isLoading, user, pathname, logout]);
 
   return (
     <Article className={className}>
