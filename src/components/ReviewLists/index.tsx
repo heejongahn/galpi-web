@@ -5,45 +5,45 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
+  Tooltip,
+  IconButton,
+  HStack,
   VStack,
 } from '@chakra-ui/react';
 import styled from '@emotion/styled';
+import { faExternalLinkAlt, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { parseISO, format } from 'date-fns';
 import { NextPage } from 'next';
 import Link from 'next/link';
 
+import Icon from '../../atoms/Icon';
 import { Review } from '../../model/Review';
 import ReadingStatusBadge from '../ReadingStatusBadge';
 import ScoreBadge from '../ScoreBadge';
 
 interface Props {
+  isMe: boolean;
   readReviews: Review[];
   unreadReviews: Review[];
 }
 
-const ReviewLists: NextPage<Props> = ({ readReviews, unreadReviews }) => {
+const ReviewLists: NextPage<Props> = ({ isMe, readReviews, unreadReviews }) => {
   const readReviewSection =
     readReviews.length > 0 ? (
       <Reviews align="stretch" spacing="12px" as="ol">
         {readReviews.map((review) => {
-          const {
-            book,
-            title,
-            createdAt,
-            lastModifiedAt,
-            readingStatus,
-            stars,
-          } = review;
+          const { book, createdAt, lastModifiedAt, activeRevision } = review;
 
           const [parsedCreatedAt, parsedLastModifiedAt] = [
             createdAt,
             lastModifiedAt,
           ].map((dateString) => format(parseISO(dateString), 'yyyy. M. d'));
+          const { title, readingStatus, stars } = activeRevision!;
 
           return (
             <li key={review.id}>
               <Link passHref href={`/review/${review.id}`}>
-                <ReviewWrapper>
+                <ReadReviewWrapper>
                   <Title>{title || '(제목 없음)'}</Title>
                   <BookTitleWrapper>
                     <BookTitle>{book.title}</BookTitle>
@@ -53,12 +53,10 @@ const ReviewLists: NextPage<Props> = ({ readReviews, unreadReviews }) => {
                     {parsedCreatedAt} 씀 · {parsedLastModifiedAt} 고침
                   </DateInfo>
                   <Badges>
-                    <ReadingStatusBadge
-                      readingStatus={readingStatus}
-                    ></ReadingStatusBadge>
-                    <StyledScoreBadge score={stars}></StyledScoreBadge>
+                    <ReadingStatusBadge readingStatus={readingStatus} />
+                    <StyledScoreBadge score={stars} />
                   </Badges>
-                </ReviewWrapper>
+                </ReadReviewWrapper>
               </Link>
             </li>
           );
@@ -78,14 +76,42 @@ const ReviewLists: NextPage<Props> = ({ readReviews, unreadReviews }) => {
 
           return (
             <li key={review.id}>
-              <Link passHref href={`/review/${review.id}`}>
-                <ReviewWrapper>
-                  <BookTitleWrapper>
-                    <BookTitle>{book.title}</BookTitle>
-                  </BookTitleWrapper>
+              <UnreadReviewWrapper align="center" spacing="12px">
+                <BookImage src={review.book.imageUri} />
+                <VStack align="flex-start" css={{ flex: '1 1 auto' }}>
+                  <BookTitle style={{ fontWeight: 700 }}>
+                    {book.title}
+                  </BookTitle>
                   <DateInfo>{parsedCreatedAt} 추가됨</DateInfo>
-                </ReviewWrapper>
-              </Link>
+                </VStack>
+                <HStack spacing="8px">
+                  <Tooltip hasArrow label="책 정보 보기">
+                    <IconButton
+                      variant="ghost"
+                      aria-label="책 정보 보기"
+                      as="a"
+                      href={review.book.linkUri}
+                      size="sm"
+                      icon={<Icon icon={faExternalLinkAlt} size={12} />}
+                    />
+                  </Tooltip>
+                  {isMe ? (
+                    <Tooltip hasArrow label="독후감 쓰기">
+                      <Flex>
+                        <Link href={`/review/${review.id}/edit`} passHref>
+                          <IconButton
+                            variant="ghost"
+                            aria-label="독후감 쓰기"
+                            as="a"
+                            size="sm"
+                            icon={<Icon icon={faPlus} size={12} />}
+                          />
+                        </Link>
+                      </Flex>
+                    </Tooltip>
+                  ) : null}
+                </HStack>
+              </UnreadReviewWrapper>
             </li>
           );
         })}
@@ -121,7 +147,7 @@ const Reviews = styled(VStack)`
   width: 100%;
 `;
 
-const ReviewWrapper = styled.a`
+const ReadReviewWrapper = styled.a`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -142,9 +168,19 @@ const ReviewWrapper = styled.a`
   }
 `;
 
+const UnreadReviewWrapper = styled(HStack)`
+  width: 100%;
+  padding: 12px 0;
+`;
+
 const Title = styled.strong`
   font-size: 2em;
   margin-bottom: 8px;
+`;
+
+const BookImage = styled.img`
+  width: 40px;
+  border: 1px solid #e2e2e2;
 `;
 
 const BookTitleWrapper = styled.div`
