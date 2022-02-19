@@ -64,8 +64,8 @@ export default function Index() {
           status: 'success',
           title: `성공적으로 로그인되었습니다.`,
         });
-        replace('/');
-        refetch();
+        const { data } = await refetch();
+        replace(`/profile/${data?.user.id}`);
       } catch {
         toast({
           position: 'top',

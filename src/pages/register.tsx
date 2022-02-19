@@ -23,15 +23,12 @@ import { FormEvent, useCallback, useContext, useState } from 'react';
 import CommonHeadElements from '../components/CommonHeadElements';
 import Layout from '../components/Layout';
 import { FirebaseContext } from '../context/FirebaseContext';
-import { useMe } from '../queries/me';
 
 export default function Index() {
   const toast = useToast();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  const { refetch } = useMe({ enabled: false });
 
   const { registerWithEmailPassword, sendLoginEmail } =
     useContext(FirebaseContext);
@@ -46,7 +43,6 @@ export default function Index() {
           status: 'success',
           title: `${email} 로 인증 메일을 발송했습니다.`,
         });
-        refetch();
       } catch {
         toast({
           position: 'top',
@@ -56,7 +52,7 @@ export default function Index() {
         });
       }
     },
-    [registerWithEmailPassword, email, password, toast, refetch]
+    [registerWithEmailPassword, email, password, toast]
   );
 
   const handleSubmitEmailOnly = useCallback(

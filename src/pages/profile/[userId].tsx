@@ -1,8 +1,13 @@
+import { Button, HStack } from '@chakra-ui/react';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { NextPage, GetServerSideProps } from 'next';
+import { useState } from 'react';
 
+import Icon from '../../atoms/Icon';
 import CommonHeadElements from '../../components/CommonHeadElements';
 import Layout from '../../components/Layout';
 import ReviewLists from '../../components/ReviewLists';
+import SearchBookModal from '../../components/SearchBookModal';
 import UserAvatar from '../../components/UserAvatar';
 import { Review } from '../../model/Review';
 import { User } from '../../model/User';
@@ -18,6 +23,7 @@ interface Props {
 
 const Profile: NextPage<Props> = ({ user, readReviews, unreadReviews }) => {
   const isMe = useIsMe(user?.id);
+  const [isSelectBookModalOpen, setIsSelectBookModalOpen] = useState(false);
 
   if (user == null) {
     return (
@@ -41,15 +47,31 @@ const Profile: NextPage<Props> = ({ user, readReviews, unreadReviews }) => {
     <>
       <CommonHeadElements title={title} description={description} />
       <Layout>
-        <UserAvatar
-          user={user}
-          title={user.displayName ?? user.email}
-          subtitle="님의 독후감"
-        />
+        <HStack align="center" justify="space-between">
+          <UserAvatar
+            user={user}
+            title={user.displayName ?? user.email}
+            subtitle="님의 독후감"
+          />
+          {isMe ? (
+            <Button
+              leftIcon={<Icon size={16} icon={faPlus} />}
+              onClick={() => setIsSelectBookModalOpen(true)}
+            >
+              갈피 남기기
+            </Button>
+          ) : null}
+        </HStack>
         <ReviewLists
           isMe={isMe}
           readReviews={readReviews}
           unreadReviews={unreadReviews}
+        />
+        <SearchBookModal
+          isOpen={isSelectBookModalOpen}
+          onClose={() => {
+            setIsSelectBookModalOpen(false);
+          }}
         />
       </Layout>
     </>
