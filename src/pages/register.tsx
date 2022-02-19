@@ -12,14 +12,13 @@ import {
   Tabs,
   Flex,
   useToast,
-  Divider,
   HStack,
   Text,
+  Divider,
 } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { FormEvent, useCallback, useContext, useState, useEffect } from 'react';
+import { FormEvent, useCallback, useContext, useState } from 'react';
 
 import CommonHeadElements from '../components/CommonHeadElements';
 import Layout from '../components/Layout';
@@ -29,53 +28,35 @@ import { useMe } from '../queries/me';
 export default function Index() {
   const toast = useToast();
 
-  const { replace, query } = useRouter();
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const registeredFromQuery = query['registered'];
-  const registered = Array.isArray(registeredFromQuery)
-    ? registeredFromQuery[0]
-    : registeredFromQuery;
-
-  useEffect(() => {
-    if (registered === 'y') {
-      toast({
-        position: 'top',
-        status: 'success',
-        title: `이메일 주소 인증이 완료되었습니다. 가입한 계정 정보로 로그인하세요.`,
-      });
-    }
-  }, [registered, toast]);
-
   const { refetch } = useMe({ enabled: false });
 
-  const { loginWithEmailPassword, sendLoginEmail } =
+  const { registerWithEmailPassword, sendLoginEmail } =
     useContext(FirebaseContext);
 
   const handleSubmitEmailPassword = useCallback(
     async (e: FormEvent) => {
       e.preventDefault();
       try {
-        await loginWithEmailPassword(email, password);
+        await registerWithEmailPassword(email, password);
         toast({
           position: 'top',
           status: 'success',
-          title: `성공적으로 로그인되었습니다.`,
+          title: `${email} 로 인증 메일을 발송했습니다.`,
         });
-        replace('/');
         refetch();
       } catch {
         toast({
           position: 'top',
-          title: '로그인에 실패했습니다.',
+          title: '회원가입에 실패했습니다.',
           description: '잠시 후 다시 시도해주세요.',
           status: 'error',
         });
       }
     },
-    [loginWithEmailPassword, email, password, toast, replace, refetch]
+    [registerWithEmailPassword, email, password, toast, refetch]
   );
 
   const handleSubmitEmailOnly = useCallback(
@@ -86,12 +67,12 @@ export default function Index() {
         toast({
           position: 'top',
           status: 'success',
-          title: `${email}(으)로 로그인 메일을 발송했습니다.`,
+          title: `${email}(으)로 회원가입 메일을 발송했습니다.`,
         });
       } catch {
         toast({
           position: 'top',
-          title: '로그인에 실패했습니다.',
+          title: '메일 발송에 실패했습니다.',
           description: '잠시 후 다시 시도해주세요.',
           status: 'error',
         });
@@ -121,7 +102,7 @@ export default function Index() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </FormControl>
-        <Button type="submit">로그인</Button>
+        <Button type="submit">회원가입</Button>
       </VStack>
     </FullWidthForm>
   );
@@ -138,27 +119,27 @@ export default function Index() {
             onChange={(e) => setEmail(e.target.value)}
           />
         </FormControl>
-        <Button type="submit">로그인 메일 발송</Button>
+        <Button type="submit">회원가입 메일 발송</Button>
       </VStack>
     </FullWidthForm>
   );
 
   return (
     <Layout>
-      <CommonHeadElements title="로그인" />
+      <CommonHeadElements title="회원가입" />
       <VStack spacing="24px" align="stretch">
         <VStack spacing="8px" align="stretch">
           <Heading as="h1" alignSelf="flex-start">
-            반가워요!
+            환영합니다!
           </Heading>
           <Heading as="h2" alignSelf="flex-start" size="md">
-            로그인하고 독서 생활의 갈피를 남겨보세요.
+            메일 주소로 가입하고 독서 생활의 갈피를 남겨보세요.
           </Heading>
         </VStack>
         <Tabs css={{ margin: '24px 0', width: '100%' }} colorScheme="black">
           <TabList>
-            <Tab>비밀번호로 로그인</Tab>
-            <Tab>메일 주소로 로그인</Tab>
+            <Tab>비밀번호로 회원가입</Tab>
+            <Tab>메일 주소로 회원가입</Tab>
           </TabList>
           <TabPanels>
             <TabPanel padding="0">
@@ -171,9 +152,9 @@ export default function Index() {
         </Tabs>
         <Divider />
         <HStack align="center" justify="end">
-          <Text color="gray">아직 계정이 없으신가요?</Text>
-          <Link passHref href="/register">
-            <Button variant="link">회원가입</Button>
+          <Text color="gray">이미 계정이 있으신가요?</Text>
+          <Link passHref href="/login">
+            <Button variant="link">로그인</Button>
           </Link>
         </HStack>
       </VStack>
