@@ -5,7 +5,6 @@
     "allowJs": false,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
-    "jsx": "preserve",
     "module": "esnext",
     "moduleResolution": "node",
     "noEmit": true,
@@ -13,11 +12,23 @@
     "noUnusedParameters": true,
     "preserveConstEnums": true,
     "forceConsistentCasingInFileNames": true,
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "incremental": true,
+    "jsx": "preserve"
   },
-  "exclude": ["node_modules"],
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
+  "exclude": [
+    "node_modules"
+  ],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ]
 }

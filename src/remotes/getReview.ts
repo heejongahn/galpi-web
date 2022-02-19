@@ -1,4 +1,4 @@
-import axios from 'axios';
+import type { AxiosInstance } from 'axios';
 import getConfig from 'next/config';
 import { Review } from '../model/Review';
 
@@ -10,11 +10,13 @@ interface Response {
   review: Review;
 }
 
-export async function getReview({ id }: Params) {
-  const { publicRuntimeConfig } = getConfig();
+export function getReview(axiosInstance: AxiosInstance) {
+  return async function ({ id }: Params) {
+    const { publicRuntimeConfig } = getConfig();
 
-  const { data } = await axios.get<Response>(
-    `${publicRuntimeConfig.API_ENDPOINT}/review/get?id=${id}`
-  );
-  return data;
+    const { data } = await axiosInstance.get<Response>(
+      `${publicRuntimeConfig.API_ENDPOINT}/review/get?id=${id}`
+    );
+    return data;
+  };
 }

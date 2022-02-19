@@ -1,4 +1,4 @@
-import axios from 'axios';
+import type { AxiosInstance } from 'axios';
 import getConfig from 'next/config';
 import { User } from '../model/User';
 
@@ -10,15 +10,17 @@ interface Response {
   user: User;
 }
 
-export async function getProfile({ userId }: Params) {
-  const { publicRuntimeConfig } = getConfig();
+export function getProfile(axiosInstance: AxiosInstance) {
+  return async ({ userId }: Params) => {
+    const { publicRuntimeConfig } = getConfig();
 
-  const { data } = await axios.get<Response>(
-    `${publicRuntimeConfig.API_ENDPOINT}/profile`,
-    {
-      params: { userId },
-    }
-  );
+    const { data } = await axiosInstance.get<Response>(
+      `${publicRuntimeConfig.API_ENDPOINT}/profile`,
+      {
+        params: { userId },
+      }
+    );
 
-  return data;
+    return data;
+  };
 }

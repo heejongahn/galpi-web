@@ -1,14 +1,15 @@
-import React, { useState, useCallback } from 'react';
+import { Heading, VStack, Button, Link, HStack } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { faApple, faGooglePlay } from '@fortawesome/free-brands-svg-icons';
+import { useState, useCallback } from 'react';
 
-import Layout from '../components/Layout';
-import { Button } from '../atoms';
 import Icon from '../atoms/Icon';
+import CommonHeadElements from '../components/CommonHeadElements';
+import Layout from '../components/Layout';
+import { Media } from '../components/Media';
 import useInterval from '../hooks/useInterval';
 import MobileLanding from './_mobileLanding';
-import CommonHeadElements from '../components/CommonHeadElements';
-import { Media } from '../components/Media';
+
 
 const screenshotNames = ['main', 'detail', 'search', 'write', 'login'];
 
@@ -41,32 +42,34 @@ export default function Index() {
           <StyledLayout key="pc" className={className}>
             <Wrapper>
               <Hero>
-                <Title>
-                  갈피는 아름다운
-                  <br />
-                  독후감 관리 앱입니다.
-                </Title>
-                <Subtitle>
-                  앱스토어 또는 구글 플레이에서 내려받고
-                  <br />
-                  독서 생활의 갈피를 남겨보세요.
-                </Subtitle>
-                <ButtonWrapper>
-                  <StoreButton
-                    href="https://apps.apple.com/kr/app/%EA%B0%88%ED%94%BC/id1470817706"
-                    target="_blank"
-                  >
-                    <StoreImage icon={faApple}></StoreImage>
-                    App Store
-                  </StoreButton>
-                  <StoreButton
-                    href="https://play.google.com/store/apps/details?id=name.ahnheejong.galpi"
-                    target="_blank"
-                  >
-                    <StoreImage icon={faGooglePlay}></StoreImage>
-                    Google Play
-                  </StoreButton>
-                </ButtonWrapper>
+                <VStack spacing="72px" align="flex-start">
+                  <VStack spacing="24px" align="flex-start">
+                    <Heading as="h1" size="2xl">
+                      갈피는 아름다운
+                      <br />
+                      독후감 관리 앱입니다.
+                    </Heading>
+                    <Heading as="h2" fontWeight={400} size="lg">
+                      앱스토어 또는 구글 플레이에서 내려받고
+                      <br />
+                      독서 생활의 갈피를 남겨보세요.
+                    </Heading>
+                  </VStack>
+                  <ButtonWrapper spacing="24px" align="center">
+                    <Link href="https://apps.apple.com/kr/app/%EA%B0%88%ED%94%BC/id1470817706">
+                      <StoreButton size="lg" target="_blank" variant="outline">
+                        <StoreImage icon={faApple}></StoreImage>
+                        App Store
+                      </StoreButton>
+                    </Link>
+                    <Link href="https://play.google.com/store/apps/details?id=name.ahnheejong.galpi">
+                      <StoreButton size="lg" target="_blank" variant="outline">
+                        <StoreImage icon={faGooglePlay}></StoreImage>
+                        Google Play
+                      </StoreButton>
+                    </Link>
+                  </ButtonWrapper>
+                </VStack>
               </Hero>
               <ScreenshotWrapper>
                 {screenshotNames.map((screenshotName, index) => (
@@ -87,7 +90,7 @@ export default function Index() {
 }
 
 const StyledLayout = styled(Layout)`
-  max-width: 1400px;
+  max-width: 1200px;
 `;
 
 const Wrapper = styled.section`
@@ -103,19 +106,7 @@ const Hero = styled.section`
   flex-direction: column;
 `;
 
-const Title = styled.h1`
-  font-size: 4rem;
-`;
-
-const Subtitle = styled.h2`
-  margin-top: 2rem;
-  font-size: 1.5rem;
-  font-weight: normal;
-`;
-
-const ButtonWrapper = styled.div`
-  margin-top: 96px;
-
+const ButtonWrapper = styled(HStack)`
   display: flex;
   align-items: center;
 `;
@@ -124,10 +115,6 @@ const StoreButton = styled(Button)`
   font-weight: bold;
   width: 300px;
   max-width: 100%;
-
-  &:not(:last-child) {
-    margin-right: 24px;
-  }
 `;
 
 const StoreImage = styled(Icon)`

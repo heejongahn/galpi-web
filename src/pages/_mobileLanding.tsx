@@ -1,11 +1,12 @@
-import React, { useState, useCallback } from 'react';
-import { faApple, faGooglePlay } from '@fortawesome/free-brands-svg-icons';
+import { Heading, Button, Link, VStack } from '@chakra-ui/react';
 import styled from '@emotion/styled';
+import { faApple, faGooglePlay } from '@fortawesome/free-brands-svg-icons';
+import { useState, useCallback } from 'react';
 
-import useInterval from '../hooks/useInterval';
-import Logo from '../components/Logo';
-import { Button } from '../atoms';
 import Icon from '../atoms/Icon';
+import Logo from '../components/Logo';
+import useInterval from '../hooks/useInterval';
+
 
 const screenshotNames = ['main', 'detail', 'search', 'write', 'login'];
 
@@ -35,27 +36,25 @@ export default function MobileLanding({ className }: Props) {
           ></Screenshot>
         ))}
       </ScreenshotWrapper>
-      <StyledLogo height={120}></StyledLogo>
-      <Title>
+      <StyledLogo height={120} />
+      <Heading as="h1" fontWeight={700} textAlign="center">
         갈피는 아름다운
         <br />
         독후감 관리 앱입니다.
-      </Title>
-      <ButtonWrapper>
-        <StoreButton
-          href="https://apps.apple.com/kr/app/%EA%B0%88%ED%94%BC/id1470817706"
-          target="_blank"
-        >
-          <StoreImage icon={faApple}></StoreImage>
-          App Store
-        </StoreButton>
-        <StoreButton
-          href="https://play.google.com/store/apps/details?id=name.ahnheejong.galpi"
-          target="_blank"
-        >
-          <StoreImage icon={faGooglePlay}></StoreImage>
-          Google Play
-        </StoreButton>
+      </Heading>
+      <ButtonWrapper align="stretch" spacing="24px">
+        <Link href="https://apps.apple.com/kr/app/%EA%B0%88%ED%94%BC/id1470817706">
+          <StoreButton target="_blank" variant="outline" size="lg">
+            <StoreImage icon={faApple}></StoreImage>
+            App Store
+          </StoreButton>
+        </Link>
+        <Link href="https://play.google.com/store/apps/details?id=name.ahnheejong.galpi">
+          <StoreButton target="_blank" variant="outline" size="lg">
+            <StoreImage icon={faGooglePlay}></StoreImage>
+            Google Play
+          </StoreButton>
+        </Link>
       </ButtonWrapper>
     </Wrapper>
   );
@@ -75,6 +74,7 @@ const Wrapper = styled.article`
 
 const ScreenshotWrapper = styled.div`
   width: 100%;
+  height: 100%;
 
   position: absolute;
   top: 0;
@@ -86,6 +86,8 @@ const Screenshot = styled.img<{ isActive: boolean }>`
   left: 0;
   top: 0;
   width: 100%;
+  height: 100%;
+  object-fit: contain;
 
   opacity: ${({ isActive }) => (isActive ? 0.2 : 0)};
   transition: 0.5s opacity ease-in-out;
@@ -95,31 +97,16 @@ const StyledLogo = styled(Logo)`
   z-index: 1;
 `;
 
-const Title = styled.h1`
-  z-index: 1;
-
-  font-size: 2rem;
-  text-align: center;
-`;
-
-const ButtonWrapper = styled.div`
+const ButtonWrapper = styled(VStack)`
   z-index: 1;
 
   margin-top: 48px;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 `;
 
 const StoreButton = styled(Button)`
   font-weight: bold;
   width: 100%;
   background-color: white;
-
-  &:not(:last-child) {
-    margin-bottom: 24px;
-  }
 `;
 
 const StoreImage = styled(Icon)`
