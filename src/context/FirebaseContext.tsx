@@ -20,6 +20,7 @@ interface FirebaseContextProps {
   app?: firebase.app.App | undefined;
   sendLoginEmail: (email: string) => void;
   loginWithEmailPassword: (email: string, password: string) => void;
+  registerWithEmailPassword: (email: string, password: string) => void;
   loginWithEmailOnly: (email: string) => void;
   logout: VoidFunction;
 }
@@ -30,6 +31,7 @@ export const FirebaseContext = createContext<FirebaseContextProps>({
   sendLoginEmail: noop,
   loginWithEmailPassword: noop,
   loginWithEmailOnly: noop,
+  registerWithEmailPassword: noop,
   logout: noop,
 });
 
@@ -105,6 +107,24 @@ export function FirebaseContextProvider({ children }: { children: ReactNode }) {
     [app, loginUser]
   );
 
+  const registerWithEmailPassword = useCallback(
+    async (email: string, password: string) => {
+      if (app == null) {
+        return null;
+      }
+
+      const { user } = await app
+        .auth()
+        .createUserWithEmailAndPassword(email, password);
+
+      user?.sendEmailVerification({
+        url: `${HOST}/login?registered=y`,
+        handleCodeInApp: true,
+      });
+    },
+    [app]
+  );
+
   const loginWithEmailOnly = useCallback(async () => {
     const email = localStorage.getItem(LOCAL_STORAGE_KEY_LOGIN_EMAIL);
 
@@ -145,6 +165,7 @@ export function FirebaseContextProvider({ children }: { children: ReactNode }) {
       value={{
         app,
         sendLoginEmail,
+        registerWithEmailPassword: registerWithEmailPassword,
         loginWithEmailPassword,
         loginWithEmailOnly,
         logout,

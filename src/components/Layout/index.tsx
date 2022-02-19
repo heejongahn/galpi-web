@@ -63,7 +63,6 @@ export default function Layout({ className, children }: Props) {
               </MenuItem>
             </NextLink>
             <MenuItem
-              as="a"
               icon={<Icon size={16} icon={faPlus} />}
               onClick={() => setIsSelectBookModalOpen(true)}
             >
