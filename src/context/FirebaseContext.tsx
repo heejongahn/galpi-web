@@ -62,11 +62,16 @@ export function FirebaseContextProvider({ children }: { children: ReactNode }) {
         return;
       }
 
-      localStorage.setItem(LOCAL_STORAGE_KEY_LOGIN_EMAIL, email);
-      await app.auth().sendSignInLinkToEmail(email, {
-        url: `${HOST}/login-redirect`,
-        handleCodeInApp: true,
-      });
+      try {
+        localStorage.setItem(LOCAL_STORAGE_KEY_LOGIN_EMAIL, email);
+        await app.auth().sendSignInLinkToEmail(email, {
+          url: `${HOST}/login-redirect`,
+          handleCodeInApp: true,
+        });
+      } catch (e) {
+        console.error(e);
+        throw e;
+      }
     },
     [app]
   );
@@ -98,11 +103,16 @@ export function FirebaseContextProvider({ children }: { children: ReactNode }) {
         return;
       }
 
-      const { user } = await app
-        .auth()
-        .signInWithEmailAndPassword(email, password);
+      try {
+        const { user } = await app
+          .auth()
+          .signInWithEmailAndPassword(email, password);
 
-      await loginUser(user);
+        await loginUser(user);
+      } catch (e) {
+        console.error(e);
+        throw e;
+      }
     },
     [app, loginUser]
   );
@@ -113,14 +123,18 @@ export function FirebaseContextProvider({ children }: { children: ReactNode }) {
         return null;
       }
 
-      const { user } = await app
-        .auth()
-        .createUserWithEmailAndPassword(email, password);
+      try {
+        const { user } = await app
+          .auth()
+          .createUserWithEmailAndPassword(email, password);
 
-      user?.sendEmailVerification({
-        url: `${HOST}/login?registered=y`,
-        handleCodeInApp: true,
-      });
+        await user?.sendEmailVerification({
+          url: `${HOST}/login?registered=y`,
+          handleCodeInApp: true,
+        });
+      } catch (e) {
+        console.error(e);
+      }
     },
     [app]
   );
@@ -132,19 +146,24 @@ export function FirebaseContextProvider({ children }: { children: ReactNode }) {
       return;
     }
 
-    const auth = app.auth();
+    try {
+      const auth = app.auth();
 
-    if (!auth.isSignInWithEmailLink(window.location.href) || email == null) {
-      alert('올바르지 않은 접근입니다.');
-      return;
+      if (!auth.isSignInWithEmailLink(window.location.href) || email == null) {
+        alert('올바르지 않은 접근입니다.');
+        return;
+      }
+
+      const { user } = await auth.signInWithEmailLink(
+        email,
+        window.location.href
+      );
+
+      await loginUser(user);
+    } catch (e) {
+      console.error(e);
+      throw e;
     }
-
-    const { user } = await auth.signInWithEmailLink(
-      email,
-      window.location.href
-    );
-
-    await loginUser(user);
   }, [app, loginUser]);
 
   const logout = useCallback(async () => {
