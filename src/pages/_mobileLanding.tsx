@@ -1,12 +1,9 @@
-import { Heading, Button, Link, VStack } from '@chakra-ui/react';
+import { Heading } from '@chakra-ui/react';
 import styled from '@emotion/styled';
-import { faApple, faGooglePlay } from '@fortawesome/free-brands-svg-icons';
 import { useState, useCallback } from 'react';
 
-import Icon from '../atoms/Icon';
 import Logo from '../components/Logo';
 import useInterval from '../hooks/useInterval';
-
 
 const screenshotNames = ['main', 'detail', 'search', 'write', 'login'];
 
@@ -38,24 +35,8 @@ export default function MobileLanding({ className }: Props) {
       </ScreenshotWrapper>
       <StyledLogo height={120} />
       <Heading as="h1" fontWeight={700} textAlign="center">
-        갈피는 아름다운
-        <br />
-        독후감 관리 앱입니다.
+        2023년 3월 부로 갈피 서비스가 종료되었습니다. 찾아주셔서 감사합니다.
       </Heading>
-      <ButtonWrapper align="stretch" spacing="24px">
-        <Link href="https://apps.apple.com/kr/app/%EA%B0%88%ED%94%BC/id1470817706">
-          <StoreButton target="_blank" variant="outline" size="lg">
-            <StoreImage icon={faApple}></StoreImage>
-            App Store
-          </StoreButton>
-        </Link>
-        <Link href="https://play.google.com/store/apps/details?id=name.ahnheejong.galpi">
-          <StoreButton target="_blank" variant="outline" size="lg">
-            <StoreImage icon={faGooglePlay}></StoreImage>
-            Google Play
-          </StoreButton>
-        </Link>
-      </ButtonWrapper>
     </Wrapper>
   );
 }
@@ -95,20 +76,4 @@ const Screenshot = styled.img<{ isActive: boolean }>`
 
 const StyledLogo = styled(Logo)`
   z-index: 1;
-`;
-
-const ButtonWrapper = styled(VStack)`
-  z-index: 1;
-
-  margin-top: 48px;
-`;
-
-const StoreButton = styled(Button)`
-  font-weight: bold;
-  width: 100%;
-  background-color: white;
-`;
-
-const StoreImage = styled(Icon)`
-  margin-right: 12px;
 `;
